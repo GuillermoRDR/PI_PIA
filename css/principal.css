@@ -1,0 +1,336 @@
+html{
+  margin: 0;
+  padding: 0;
+}
+
+body {
+    background: linear-gradient(180deg, #889FDC, #0339A6, #1E2E86, #141E59);
+    margin: 0;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+}
+
+img#logo {
+    width: 450px;
+  height: 350px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+button#conf {
+ border-top-left-radius: 0;
+   border-bottom-left-radius: 0;
+   border-top-right-radius: 20px;
+   border-bottom-right-radius: 20px;
+   margin-right:auto;
+   top:0;
+  left:0;
+  width: 70px;
+  height: 67px;
+  color: #4b2c04;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+
+button#usu {
+ border-top-right-radius: 0;
+   border-bottom-right-radius: 0;
+   border-top-left-radius: 20px;
+   border-bottom-left-radius: 20px;
+   position:absolute;
+  top:0;
+  right:0;
+  width: 260px;
+  height: 67px;
+  color: #4b2c04;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+button#conf:hover, button#usu:hover, button#tri:hover, button#gal:hover{
+   
+  background: #F9D55C;
+}
+
+button#conf:active, button#usu:active, button#tri:active, button#gal:active
+{
+    background: #9F5D09;
+    color: #F9D55C;
+}
+
+img#prof {
+    width: 40px;
+  height: 40px;
+   position:absolute;
+  right:20px;
+  top:10px;
+}
+
+img#conf {
+    width: 40px;
+  height: 40px;
+  border-radius: 50%;
+   position:absolute;
+  left:10px;
+  top:10px;
+}
+
+.bottom{
+  position:relative;
+  width:50%;
+}
+
+
+
+button{
+    color: white;
+    font-size: larger;
+    border-color: black;
+    font-family: 'Alfa Slab One', cursive;
+
+}
+
+button#esc{
+   
+    background: linear-gradient(180deg,  #F8A5A2, #CA2407, #AE120A, #890200);
+    color: white;
+    width: 135px;
+  height: 90px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #3c0100;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+button#esc:hover{
+   
+  background: #F8A5A2;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+button#esc:active
+{
+    background: #890200;
+    color: #F8A5A2;
+}
+
+
+button#tri {
+    position:absolute;
+  bottom:0;
+  left:0;
+   height: 67px;
+   background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+   color: #4b2c04;
+   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+button#gal {
+    position:absolute;
+  bottom:0;
+  right:0;
+   height: 67px;
+   background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+   color: #4b2c04;
+   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+
+.oculto {
+    display: none;
+}
+
+div#extend {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    display: none;
+}
+
+div#extend.show {
+    display: flex;       
+}
+
+img#extendf {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    max-height: 70vh;
+    border-radius: 10px;
+    border: 14px solid white;
+}
+
+button#hide {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+   background: linear-gradient(180deg,  #F8A5A2, #CA2407, #AE120A, #890200);
+    border-radius: 50%;
+    border: clamp(2px, 0.5vw, 4px) solid white;
+    width: clamp(32px, 8vw, 45px);
+    height: clamp(32px, 8vw, 45px);
+    font-size: clamp(12px, 3vw, 15px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+button#hide:hover {
+background: #F8A5A2;
+}
+
+button#hide:active {
+background: #890200;
+}
+
+
+button#hide img,
+button#share img,
+button#favf img,
+button#delete img {
+    width: 55%;
+    height: 55%;
+    object-fit: contain;
+}
+
+button#share {
+    position: absolute;
+    bottom: 5%;
+    left: 40%;
+   background: linear-gradient(180deg, #889FDC, #0339A6, #1E2E86, #141E59);
+    border-radius: 50%;
+    border: 4px solid white;
+    width: 45px;
+    height: 45px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+button#share:hover {
+background: #889FDC;
+}
+
+button#share:active {
+background: #141E59;
+}
+
+button#favf {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+    border-radius: 50%;
+    border: 4px solid white;
+    width: 45px;
+    height: 45px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+button#favf:hover {
+background: #F9D55C;
+}
+
+button#favf:active {
+background: #9F5D09;
+}
+
+button#delete {
+    position: absolute;
+    bottom: 5%;
+    left: 60%;
+  background: linear-gradient(180deg,  #F8A5A2, #CA2407, #AE120A, #890200);
+    border-radius: 50%;
+    border: 4px solid white;
+    width: 45px;
+    height: 45px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+button#delete:hover {
+background: #F8A5A2;
+}
+
+button#delete:active {
+background: #890200;
+}
+
+h2 {
+    position: fixed;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:white;
+}
+
+button#back {
+ border-top-left-radius: 0;
+   border-bottom-left-radius: 0;
+   border-top-right-radius: 20px;
+   border-bottom-right-radius: 20px;
+   margin-right:auto;
+   top:0;
+  left:0;
+  width: 70px;
+  height: 67px;
+  color: #4b2c04;
+  background: linear-gradient(180deg, #F8A5A2, #CA2407, #AE120A, #890200);
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+
+
+button#back:hover{
+   
+  background: #F8A5A2;
+}
+
+button#back:active
+{
+    background: #890200;
+    color: #F8A5A2;
+}
+
+img#back {
+    width: 40px;
+  height: 40px;
+   position:absolute;
+  left:10px;
+  top:10px;
+}

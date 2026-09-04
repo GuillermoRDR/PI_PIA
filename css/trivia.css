@@ -1,0 +1,230 @@
+html{
+  margin: 0;
+  padding: 0;
+}
+
+body
+{
+    margin: 0;
+  padding: 0;
+  background:  #e1d2a1;
+  align-content: center;
+  background-repeat: no-repeat;
+   min-height: 100vh;
+}
+
+
+
+
+
+button{
+    color: white;
+    font-size: larger;
+    border-color: black;
+    font-family: 'Alfa Slab One', cursive;
+
+}
+
+
+
+  img#miniatura{
+    width: 250px;
+  height: 150px;
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid black;
+  border-radius: 20%;
+
+  }
+
+  button#starta {
+ 
+   margin-right:auto;
+   top: 60%;
+   left: 50%;
+   transform: translate(-50%);
+   border-radius: 15%;
+   position: fixed;
+  width: 450px;
+  height: 57px;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+
+    font-size:30px;
+    color:#E8402A;
+ 
+    text-shadow:
+      -1px 1px 0 white,
+      -2px 2px 0 white,
+      -3px 3px 0 white,
+      -4px 4px 0 white;
+}
+
+button#startb {
+ 
+   margin-right:auto;
+   top: 70%;
+   left: 50%;
+   transform: translate(-50%);
+   border-radius: 15%;
+   position: fixed;
+  width: 450px;
+  height: 57px;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+
+    font-size:30px;
+    color:#E8402A;
+ 
+    text-shadow:
+      -1px 1px 0 white,
+      -2px 2px 0 white,
+      -3px 3px 0 white,
+      -4px 4px 0 white;
+}
+
+button#startc {
+ 
+   margin-right:auto;
+   top: 80%;
+   left: 50%;
+   transform: translate(-50%);
+   border-radius: 15%;
+   position: fixed;
+  width: 450px;
+  height: 57px;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+
+    font-size:30px;
+    color:#E8402A;
+ 
+    text-shadow:
+      -1px 1px 0 white,
+      -2px 2px 0 white,
+      -3px 3px 0 white,
+      -4px 4px 0 white;
+}
+
+button#startd {
+ 
+   margin-right:auto;
+   top: 90%;
+   left: 50%;
+   transform: translate(-50%);
+   border-radius: 15%;
+   position: fixed;
+  width: 450px;
+  height: 57px;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+
+    font-size:30px;
+    color:#E8402A;
+ 
+    text-shadow:
+      -1px 1px 0 white,
+      -2px 2px 0 white,
+      -3px 3px 0 white,
+      -4px 4px 0 white;
+}
+
+button#starta:hover,button#startb:hover, button#startc:hover, button#startd:hover {
+   
+  background: #F9D55C;
+}
+
+button#starta:active,button#startb:active, button#startd:active
+{
+    background: red;
+    color: white;
+
+    text-shadow:
+      -1px 1px 0 black,
+      -2px 2px 0 black,
+      -3px 3px 0 black,
+      -4px 4px 0 black;
+}
+
+button#startc:active
+{
+ background: green;
+    color: white;
+
+    text-shadow:
+      -1px 1px 0 black,
+      -2px 2px 0 black,
+      -3px 3px 0 black,
+      -4px 4px 0 black;   
+}
+
+label#num {
+    text-align: right;
+    position: fixed;
+    top: 0%;
+    right: 0%;
+     transform: translateX(-50%);
+}
+
+
+h1#pregunta{
+    margin:0;
+    font-family: 'Alfa Slab One', cursive;
+    font-size:40px;
+    width: 1000px;
+    color:#FFB300;
+    text-align: center;
+
+    position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ 
+    text-shadow:
+      -2px 2px 0 #f08c00,
+      -3px 3px 0 #f08c00,
+      -4px 4px 0 #f08c00,
+      -5px 5px 0 #f08c00,
+
+      
+ 
+      -7px 7px 0 #E8402A,
+      -8px 8px 0 #E8402A,
+      -9px 9px 0 #E8402A,
+      -10px 10px 0 #E8402A,
+
+      -12px 12px 0 #3a3226,
+      -13px 13px 0 #3a3226,
+      -14px 14px 0 #3a3226,
+      -15px 15px 0 #3a3226;
+  }
+
+  h1#preguntan{
+    margin:0;
+    font-family: 'Alfa Slab One', cursive;
+    font-size:30px;
+    width: 1000px;
+    color:#FFB300;
+    text-align: center;
+
+    position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ 
+    text-shadow:
+      -2px 2px 0 #f08c00,
+      -3px 3px 0 #f08c00,
+      -4px 4px 0 #f08c00,
+      -5px 5px 0 #f08c00,
+
+      
+ 
+      -7px 7px 0 #E8402A,
+      -8px 8px 0 #E8402A,
+      -9px 9px 0 #E8402A,
+      -10px 10px 0 #E8402A,
+
+      -12px 12px 0 #3a3226,
+      -13px 13px 0 #3a3226,
+      -14px 14px 0 #3a3226,
+      -15px 15px 0 #3a3226;
+  }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>¡BATEA!</title>
+
+        <link href="css/principal.css" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+
+       
+
+       <button id="conf"  onclick="window.location.href='configuracion.html'"> <img id="conf" src="media/imagenes/Conf.png"></button>
+       <button id="usu" onclick="window.location.href='usuario.html'">Usuario <img id="prof" src="media/imagenes/fedep.png"></button>
+
+       
+     
+       <br>
+       <img id="logo" src="media/imagenes/BASET.png" alt="bat">
+        
+       <button class="bottom" id="tri" onclick="window.location.href='trivias.html'">Trivia</button>
+       <button class="bottom" id="gal" onclick="window.location.href='galeria.html'">Galería</button>
+        <button id="esc" onclick="openf(this)">Escanea</button>
+        <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
+
+        <div id="extend">
+        
+        <img id="extendf" src="media/imagenes/scan.png" alt="foto ampliada">
+        <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
+        <h2 onclick="window.location.href='AR.html'"> Escaneando...</h2>
+    </div>
+
+    <script>
+
+function openf(img) {
+    document.getElementById('extend').classList.add('show');
+}
+
+function closef() {
+    document.getElementById('extend').classList.remove('show');
+}
+
+
+</script>
+
+    </body>
+
+
+</html>
