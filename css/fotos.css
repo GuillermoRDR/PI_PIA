@@ -1,0 +1,274 @@
+html{
+  margin: 0;
+  padding: 0;
+}
+
+body
+{
+    background: linear-gradient(180deg, #FBD0FC, #B160C5, #7E3995, #260532);
+    margin: 0;
+  padding: 0;
+  align-content: center;
+  text-align: center;
+  background-repeat: no-repeat;
+   min-height: 100vh;
+}
+
+
+
+
+button#back {
+ border-top-left-radius: 0;
+   border-bottom-left-radius: 0;
+   border-top-right-radius: 20px;
+   border-bottom-right-radius: 20px;
+   margin-right:auto;
+   position: absolute;
+   top:0;
+  left:0;
+  width: 70px;
+  height: 67px;
+  color: #4b2c04;
+  background: linear-gradient(180deg, #F8A5A2, #CA2407, #AE120A, #890200);
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+
+
+button#back:hover{
+   
+  background: #F8A5A2;
+}
+
+button#back:active
+{
+    background: #890200;
+    color: #F8A5A2;
+}
+
+
+img#back {
+    width: 40px;
+  height: 40px;
+   position:absolute;
+  left:10px;
+  top:10px;
+}
+
+button{
+    color: white;
+    font-size: larger;
+    border-color: black;
+    font-family: 'Alfa Slab One', cursive;
+
+}
+
+.efecto {
+    padding:60px 40px;
+    display:flex;
+    justify-content:center;
+}
+
+.trivia{
+    margin:0;
+    font-family: 'Alfa Slab One', cursive;
+    font-size:80px;
+    color:white;
+
+    position: fixed;
+  top: 19%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ 
+    text-shadow:
+      -2px 2px 0 #260532,
+      -3px 3px 0 #260532,
+      -4px 4px 0 #260532,
+      -5px 5px 0 #260532;
+  }
+
+ 
+div#galeria {
+     background-color: white;
+    border-radius: 10%;
+    min-height: 70vh;
+    width: 90%;
+    background-repeat: no-repeat;
+    position: relative;
+    left:50%;
+  transform: translate(-50%, 5%);
+  text-align: center;
+}
+
+input#fav{
+    position: absolute;
+    top: 3.5%;
+    left: 5%;
+    width: clamp(14px, 2vw, 20px);
+    height: clamp(14px, 2vw, 20px);
+    cursor: pointer;
+}
+
+label#favt{
+    position: absolute;
+    top: 3.5%;
+    left: calc(5% + clamp(20px, 3vw, 30px));
+    font-size: clamp(14px, 2.2vw, 20px);
+    white-space: nowrap;
+}
+
+img#foto{
+    width: 100px;
+    height:140px;
+    position: absolute;
+    top: 15%;
+    left: calc(5% + clamp(20px, 3vw, 30px));
+    font-size: clamp(14px, 2.2vw, 20px);
+    white-space: nowrap;
+    border: 3px solid black;
+    border-radius: 10%;
+}
+
+.oculto {
+    display: none;
+}
+
+div#extend {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    display: none;
+}
+
+div#extend.show {
+    display: flex;       
+}
+
+img#extendf {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    max-height: 70vh;
+    border-radius: 10px;
+    border: 14px solid white;
+}
+
+button#hide {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+   background: linear-gradient(180deg,  #F8A5A2, #CA2407, #AE120A, #890200);
+    border-radius: 50%;
+    border: clamp(2px, 0.5vw, 4px) solid white;
+    width: clamp(32px, 8vw, 45px);
+    height: clamp(32px, 8vw, 45px);
+    font-size: clamp(12px, 3vw, 15px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+button#hide:hover {
+background: #F8A5A2;
+}
+
+button#hide:active {
+background: #890200;
+}
+
+
+button#hide img,
+button#share img,
+button#favf img,
+button#delete img {
+    width: 55%;
+    height: 55%;
+    object-fit: contain;
+}
+
+button#share {
+    position: absolute;
+    bottom: 5%;
+    left: 40%;
+   background: linear-gradient(180deg, #889FDC, #0339A6, #1E2E86, #141E59);
+    border-radius: 50%;
+    border: 4px solid white;
+    width: 45px;
+    height: 45px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+button#share:hover {
+background: #889FDC;
+}
+
+button#share:active {
+background: #141E59;
+}
+
+button#favf {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+    border-radius: 50%;
+    border: 4px solid white;
+    width: 45px;
+    height: 45px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+button#favf:hover {
+background: #F9D55C;
+}
+
+button#favf:active {
+background: #9F5D09;
+}
+
+button#delete {
+    position: absolute;
+    bottom: 5%;
+    left: 60%;
+  background: linear-gradient(180deg,  #F8A5A2, #CA2407, #AE120A, #890200);
+    border-radius: 50%;
+    border: 4px solid white;
+    width: 45px;
+    height: 45px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+button#delete:hover {
+background: #F8A5A2;
+}
+
+button#delete:active {
+background: #890200;
+}

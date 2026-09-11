@@ -1,0 +1,125 @@
+html{
+  margin: 0;
+  padding: 0;
+}
+
+body
+{
+    margin: 0;
+  padding: 0;
+ background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+  background-repeat: no-repeat;
+   min-height: 100vh;
+   text-align: center;
+}
+button{
+    color: white;
+    font-size: larger;
+    border-color: black;
+    font-family: 'Alfa Slab One', cursive;
+
+}
+
+h1 {
+    margin:0;
+    font-family: 'Alfa Slab One', cursive;
+    font-size:35px;
+    color:#E8402A;
+    text-align: center;
+
+    position: fixed;
+  top: 18%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ 
+    text-shadow:
+      -2px 2px 0 White;
+}
+
+h3 {
+     margin:0;
+    font-family: 'Alfa Slab One', cursive;
+    font-size:25px;
+    height: auto;
+    color:#E8402A;
+    text-align: center;
+
+    position: fixed;
+  bottom: 15%;
+  left: 50%;
+  transform: translate(-50%, 15%);
+ 
+    text-shadow:
+      -2px 2px 0 White;
+
+}
+
+img#a1{
+    width: 150px;
+    height: 200px;
+    position: fixed;
+  bottom: 16%;
+  left: 42%;
+  transform: translate(-50%, -50%);
+  border: 2px solid black;
+  filter: drop-shadow(-2px 2px 0 #9F5D09);
+}
+
+img#a2{
+   width: 150px;
+    height: 200px;
+    position: fixed;
+  bottom: 16%;
+  left: 58%;
+  transform: translate(-50%, -50%);
+  border: 2px solid black;
+  filter: drop-shadow(-2px 2px 0 #9F5D09);
+}
+
+img#a3{
+    width: 150px;
+    height: 200px;
+    position: fixed;
+  bottom: 18%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid black;
+  filter: drop-shadow(-2px 2px 0 #9F5D09);
+}
+
+button#recomp
+{
+  position: fixed;
+  bottom: 0%;
+  left: 50%;
+ background: linear-gradient(180deg,  #F8A5A2, #CA2407, #AE120A, #890200);
+  color: white;
+   transform: translate(-50%);
+   border-bottom-left-radius: 0;
+   border-bottom-right-radius: 0;
+   border-top-right-radius: 20px;
+   border-top-left-radius: 20px;
+   margin-right:auto;
+   width: 260px;
+  height: 67px;
+}
+
+button#recomp:hover{
+   
+  background: #F8A5A2;
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+button#recomp:active
+{
+    background: #890200;
+    color: #F8A5A2;
+}
+
+
+
+  

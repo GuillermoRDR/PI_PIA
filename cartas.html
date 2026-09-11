@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Galería de cartas</title>
+
+        <link href="css/cartas.css" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+
+        <button id="back" onclick="window.location.href='galeria.html'"> <img id="back" src="media/imagenes/back.png"></button>
+      
+        
+
+       
+
+        <div class="efecto">
+         <h1 class="trivia">Cartas</h1>
+        </div>
+
+        <div id="galeria">
+             <input type="text" id="bus" placeholder="Buscar carta por equipo o por jugador">
+            <br>
+            <br>
+            <br>
+            <img src="media/imagenes/card.jpg" alt="foto" id="foto" onclick="openf(this)">
+
+        </div>
+
+    <div id="extend">
+        
+        <img id="extendf" src="media/imagenes/card.jpg" alt="foto ampliada">
+        <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
+        <h1 id="cardi">Javier Baez, Detroit Tigers </h1>
+         <h2>Conseguida 1 vez </h2>
+         <img id="star1" src="media/imagenes/star.png" alt="star">
+         <img id="star2" src="media/imagenes/star.png" alt="star">
+         <img id="star3" src="media/imagenes/star.png" alt="star">
+        <button id="share"><img src="media/imagenes/share.png" alt="share" id="sharei"></button>
+        <button id="favf"><img src="media/imagenes/star.png" alt="star" id="star"></button>
+    </div>
+
+<script>
+
+function openf(img) {
+    document.getElementById('extendf').src = img.src;
+    document.getElementById('extend').classList.add('show');
+}
+
+function closef() {
+    document.getElementById('extend').classList.remove('show');
+}
+
+
+</script>
+       
+        
+
+
+    </body>
+
+
+</html>

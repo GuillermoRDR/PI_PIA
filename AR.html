@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AR</title>
+
+        <link href="css/ar.css" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+
+       
+        <img id="logo" src="media/imagenes/WOW.png" alt="bat">
+       
+
+
+       <button id="usu" onclick="openfi(this)">Estadísticas e historia</button>
+
+       
+
+        <button id="back"  onclick="window.location.href='principal.html'"> <img id="back" src="media/imagenes/back.png"></button>
+       
+     
+       <br>
+       
+        
+       <button class="bottom" id="tri" onclick="window.location.href='trivias.html'">Trivia</button>
+       <button class="bottom" id="gal" onclick="window.location.href='galeria.html'">Galería</button>
+        <button class="bottomu" id="con">Confeti</button>
+       <button class="bottomu" id="mov" >Moverse</button>
+        <button id="esc" onclick="openf(this)">Escanea</button>
+        <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
+
+        <div id="extend">
+        
+        <img id="extendf" src="media/imagenes/scan.png" alt="foto ampliada">
+        <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
+        <h2 onclick="window.location.href='AR.html'"> Escaneando...</h2>
+    </div>
+
+    <div id="extendfi">
+        
+        <button id="hidefi" onclick="closefi()"><img src="media/imagenes/x.png" alt="X2" id="x2"></button>
+        <div id="his">
+            <h3>Los Angeles Dodgers</h3>
+            <img src="media/imagenes/LA.png" alt="estadisticas">
+            <h4>Historia del equipo</h4>
+            <h5>Blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah.</h5>
+            <h4>Estadísticas del equipo</h4>
+            <img src="media/imagenes/est.png" alt="estadisticas">
+             <h4>Historia del Baseball</h4>
+            <h5>Blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah.</h5>
+        </div>
+
+    </div>
+
+    <script>
+
+function openf(img) {
+    document.getElementById('extend').classList.add('show');
+}
+
+function closef() {
+    document.getElementById('extend').classList.remove('show');
+}
+
+function openfi(img) {
+    document.getElementById('extendfi').classList.add('showfi');
+}
+
+function closefi() {
+    document.getElementById('extendfi').classList.remove('showfi');
+}
+
+</script>
+
+    </body>
+
+
+</html>
