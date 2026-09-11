@@ -15,14 +15,9 @@
     </head>
 
     <body>
-
-       
-
        <button id="conf"  onclick="window.location.href='configuracion.html'"> <img id="conf" src="media/imagenes/Conf.png"></button>
        <button id="usu" onclick="window.location.href='usuario.html'">Usuario <img id="prof" src="media/imagenes/fedep.png"></button>
 
-       
-     
        <br>
        <img id="logo" src="media/imagenes/BASET.png" alt="bat">
         
@@ -32,71 +27,72 @@
         <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
 
         <div id="extend">
-    <div id="arContainer"></div>
-    <div id="arOverlay"></div>
-    <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
-    <h2 id="scanStatus">Escaneando...</h2>
-</div>
+            <div id="arContainer"></div>
+            <div id="arOverlay"></div>
+            <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
+            <h2 id="scanStatus">Escaneando...</h2>
+        </div>
 
 
-<script>
-let sceneEl = null;
+        <script>
+            let sceneEl = null;
+            const TOTAL_TARGETS = 3;
 
-function openf() {
-    document.getElementById('extend').classList.add('show');
-    document.getElementById('scanStatus').innerText = 'Escaneando...';
+            function openf() {
+                document.getElementById('extend').classList.add('show');
+                document.getElementById('scanStatus').innerText = 'Escaneando...';
 
-    sceneEl = document.createElement('a-scene');
-    sceneEl.setAttribute('mindar-image', 'imageTargetSrc: targets.mind; uiLoading: no; uiScanning: no; uiError: no; autoStart: true;');
-    sceneEl.setAttribute('color-space', 'sRGB');
-    sceneEl.setAttribute('renderer', 'colorManagement: true, physicallyCorrectLights');
-    sceneEl.setAttribute('vr-mode-ui', 'enabled: false');
-    sceneEl.setAttribute('device-orientation-permission-ui', 'enabled: false');
-    sceneEl.setAttribute('embedded', '');
-    sceneEl.id = 'mindarScene';
+                sceneEl = document.createElement('a-scene');
+                sceneEl.setAttribute('mindar-image', 'imageTargetSrc: targets.mind; uiLoading: no; uiScanning: no; uiError: no; autoStart: true;');
+                sceneEl.setAttribute('color-space', 'sRGB');
+                sceneEl.setAttribute('renderer', 'colorManagement: true, physicallyCorrectLights');
+                sceneEl.setAttribute('vr-mode-ui', 'enabled: false');
+                sceneEl.setAttribute('device-orientation-permission-ui', 'enabled: false');
+                sceneEl.setAttribute('embedded', '');
+                sceneEl.id = 'mindarScene';
 
-    const camera = document.createElement('a-camera');
-    camera.setAttribute('position', '0 0 0');
-    camera.setAttribute('look-controls', 'enabled: false');
+                const camera = document.createElement('a-camera');
+                camera.setAttribute('position', '0 0 0');
+                camera.setAttribute('look-controls', 'enabled: false');
+                sceneEl.appendChild(camera);
 
-    const target = document.createElement('a-entity');
-    target.setAttribute('mindar-image-target', 'targetIndex: 0');
-    target.id = 'target0';
+                for (let i = 0; i < TOTAL_TARGETS; i++) {
+                    const target = document.createElement('a-entity');
+                    target.setAttribute('mindar-image-target', `targetIndex: ${i}`);
+                    target.id = `target${i}`;
 
-    target.addEventListener('targetFound', () => {
-        document.getElementById('scanStatus').innerText = '¡Imagen detectada!';
-        setTimeout(() => {
-            window.location.href = 'AR.html';
-        }, 500);
-    });
+                    target.addEventListener('targetFound', () => {
+                        document.getElementById('scanStatus').innerText = `¡Imagen ${i + 1} detectada!`;
+                        
+                        setTimeout(() => {
+                            window.location.href = `AR.html?target=${i}`;
+                        }, 500);
+                    });
 
-    sceneEl.appendChild(camera);
-    sceneEl.appendChild(target);
-    document.getElementById('arContainer').appendChild(sceneEl);
+                    sceneEl.appendChild(target);
+                }
+                
+                document.getElementById('arContainer').appendChild(sceneEl);
+                
+                const interval = setInterval(() => {
+                    const video = sceneEl.querySelector('video');
+                    if (video) {
+                        video.setAttribute('disablePictureInPicture', '');
+                        video.setAttribute('controlsList', 'nofullscreen nodownload noremoteplayback');
+                        video.style.pointerEvents = 'none';
+                        clearInterval(interval);
+                    }
+                }, 100);
+            }
 
-    const interval = setInterval(() => {
-        const video = sceneEl.querySelector('video');
-        if (video) {
-            video.setAttribute('disablePictureInPicture', '');
-            video.setAttribute('controlsList', 'nofullscreen nodownload noremoteplayback');
-            video.style.pointerEvents = 'none';
-            clearInterval(interval);
-        }
-    }, 100);
-}
+            function closef() {
+                document.getElementById('extend').classList.remove('show');
 
-function closef() {
-    document.getElementById('extend').classList.remove('show');
-
-    if (sceneEl) {
-        sceneEl.parentNode.removeChild(sceneEl);
-        sceneEl = null;
-    }
-}
-</script>
-
-
+                if (sceneEl) {
+                    sceneEl.parentNode.removeChild(sceneEl);
+                    sceneEl = null;
+                }
+            }
+        </script>
     </body>
-
-
 </html>
