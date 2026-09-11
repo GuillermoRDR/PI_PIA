@@ -40,13 +40,14 @@ h3 {
      margin:0;
     font-family: 'Alfa Slab One', cursive;
     font-size:25px;
+    height: auto;
     color:#E8402A;
     text-align: center;
 
     position: fixed;
   bottom: 15%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 15%);
  
     text-shadow:
       -2px 2px 0 White;

@@ -57,7 +57,7 @@ h2 {
 h3 {
      margin:0;
     font-family: 'Alfa Slab One', cursive;
-    font-size:30px;
+    font-size:14px;
     width: auto;
     height: auto;
     color:#E8402A;
@@ -75,9 +75,9 @@ h3 {
 h4#a {
      margin:0;
     font-family: 'Alfa Slab One', cursive;
-    font-size:25px;
-    height: auto;
+    font-size:12px;
     width: auto;
+    height: auto;
     color:#E8402A;
     text-align: center;
 
@@ -93,9 +93,9 @@ h4#a {
 h4#b {
      margin:0;
     font-family: 'Alfa Slab One', cursive;
-    font-size:25px;
-    height: auto;
+    font-size:12px;
     width: auto;
+    height: auto;
     color:#E8402A;
     text-align: center;
 
@@ -111,9 +111,9 @@ h4#b {
 h4#c {
      margin:0;
     font-family: 'Alfa Slab One', cursive;
-    font-size:25px;
-    height: auto;
+    font-size: 12px;
     width: auto;
+    height: auto;
     color:#E8402A;
     text-align: center;
 
