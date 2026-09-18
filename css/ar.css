@@ -111,9 +111,8 @@ img#conf {
 .bottomu{
   position:relative;
   width:50%;
+
 }
-
-
 
 button{
     color: white;
@@ -124,10 +123,9 @@ button{
 }
 
 button#esc{
-   
-    background: linear-gradient(180deg,  #F8A5A2, #CA2407, #AE120A, #890200);
-    color: white;
-    width: 135px;
+  background: linear-gradient(180deg,  #F8A5A2, #CA2407, #AE120A, #890200);
+  color: white;
+  width: 135px;
   height: 90px;
   border-radius: 50%;
   position: absolute;
@@ -136,6 +134,7 @@ button#esc{
   transform: translateX(-50%);
   color: #3c0100;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+  z-index: 11;
 }
 
 button#esc:hover{
@@ -595,4 +594,15 @@ div#his::-webkit-scrollbar-track {
 div#his::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 10px;
+}
+
+.bottomu, 
+button#mov, 
+button#con, 
+button#usu, 
+button#back, 
+.bottom {
+    z-index: 10 !important;         
+    position: absolute !important;  
+    pointer-events: auto !important;
 }

@@ -1,91 +1,87 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Visualizador AR - Batea</title>
 
-        <link href="css/ar.css" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizador AR - Batea</title>
 
-        <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-        <script src="js/sceneAR.js" defer></script>
-    </head>
+  <link href="css/ar.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
-    <body>
-       <!-- <img id="logo" src="media/imagenes/WOW.png" alt="bat"> -->
-       <button id="usu" onclick="openfi(this)">Estadísticas e historia</button>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="js/sceneAR.js" defer></script>
+</head>
 
-       <button id="back"  onclick="window.location.href='principal.html'"> <img id="back" src="media/imagenes/back.png"></button>
-       <br>
-       <button class="bottom" id="tri" onclick="window.location.href='trivias.html'">Trivia</button>
-       <button class="bottom" id="gal" onclick="window.location.href='galeria.html'">Galería</button>
-        <button class="bottomu" id="con">Confeti</button>
-       <button class="bottomu" id="mov" >Moverse</button>
-        <button id="esc" onclick="openf(this)">Escanea</button>
-        <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
+<body>
+  <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiLoading: no; uiScanning: no;"
+    color-space="sRGB" embedded renderer="colorManagement: true" vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
 
-        <div id="extend">
-            <img id="extendf" src="media/imagenes/scan.png" alt="foto ampliada">
-            <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
-            <h2 onclick="window.location.href='AR.html'"> Escaneando...</h2>
-  
-        </div>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-light type="ambient" intensity="1.5"></a-light>
+    <a-light type="directional" position="1 2 3" intensity="1"></a-light>
 
-        <a-scene 
-            mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiLoading: no; uiScanning: no;"
-            color-space="sRGB" 
-            embedded 
-            renderer="colorManagement: true" 
-            vr-mode-ui="enabled: false" 
-            device-orientation-permission-ui="enabled: false">
-            
-            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-            <a-light type="ambient" intensity="1.5"></a-light>
-            <a-light type="directional" position="1 2 3" intensity="1"></a-light>
+    <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
+      <a-entity id="modelo-3d" position="0 0 0" scale="2 2 2" rotation="0 0 0"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear; autoplay: false"></a-entity>
+    </a-entity>
+  </a-scene>
 
-            <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
-                <a-entity id="modelo-3d" position="0 0 0" scale="1 1 1" rotation="0 0 0"></a-entity>
-            </a-entity>
-            
-        </a-scene>
+  <div id="extendfi">
+    <button id="hidefi" onclick="closefi()"><img src="media/imagenes/x.png" alt="X2" id="x2"></button>
+    <div id="his">
+      <h3>Los Angeles Dodgers</h3>
+      <img src="media/imagenes/LA.png" alt="estadisticas">
+      <h4>Historia del equipo</h4>
+      <h5>Blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah.</h5>
+      <h4>Estadísticas del equipo</h4>
+      <img src="media/imagenes/est.png" alt="estadisticas">
+      <h4>Historia del Baseball</h4>
+      <h5>Blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah.</h5>
+    </div>
+  </div>
 
-        <div id="extendfi">
-            
-            <button id="hidefi" onclick="closefi()"><img src="media/imagenes/x.png" alt="X2" id="x2"></button>
-            <div id="his">
-                <h3>Los Angeles Dodgers</h3>
-                <img src="media/imagenes/LA.png" alt="estadisticas">
-                <h4>Historia del equipo</h4>
-                <h5>Blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah.</h5>
-                <h4>Estadísticas del equipo</h4>
-                <img src="media/imagenes/est.png" alt="estadisticas">
-                <h4>Historia del Baseball</h4>
-                <h5>Blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah.</h5>
-            </div>
+  <!-- <img id="logo" src="media/imagenes/WOW.png" alt="bat"> -->
+  <button id="usu" onclick="openfi(this)">Estadísticas e historia</button>
+  <button id="back" onclick="window.location.href='principal.html'"> <img id="back"
+      src="media/imagenes/back.png"></button>
+  <br>
+  <button class="bottom" id="tri" onclick="window.location.href='trivias.html'">Trivia</button>
+  <button class="bottom" id="gal" onclick="window.location.href='galeria.html'">Galería</button>
+  <button class="bottomu" id="con">Confeti</button>
+  <button class="bottomu" id="mov">Moverse</button>
+  <button id="esc" onclick="openf(this)">Escanea</button>
+  <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
 
-        </div>
-        <script>
+  <div id="extend">
+    <img id="extendf" src="media/imagenes/scan.png" alt="foto ampliada">
+    <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
+    <h2 onclick="window.location.href='AR.html'"> Escaneando...</h2>
+  </div>
 
-            function openf(img) {
-                document.getElementById('extend').classList.add('show');
-            }
+  <script>
 
-            function closef() {
-                document.getElementById('extend').classList.remove('show');
-            }
+    function openf(img) {
+      document.getElementById('extend').classList.add('show');
+    }
 
-            function openfi(img) {
-                document.getElementById('extendfi').classList.add('showfi');
-            }
+    function closef() {
+      document.getElementById('extend').classList.remove('show');
+    }
 
-            function closefi() {
-                document.getElementById('extendfi').classList.remove('showfi');
-            }
+    function openfi(img) {
+      document.getElementById('extendfi').classList.add('showfi');
+    }
 
-        </script>
-    </body>
+    function closefi() {
+      document.getElementById('extendfi').classList.remove('showfi');
+    }
+
+  </script>
+</body>
+
 </html>
