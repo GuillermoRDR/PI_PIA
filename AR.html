@@ -13,6 +13,7 @@
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="js/sceneAR.js" defer></script>
 </head>
 
@@ -52,7 +53,7 @@
   <br>
   <button class="bottom" id="tri" onclick="window.location.href='trivias.html'">Trivia</button>
   <button class="bottom" id="gal" onclick="window.location.href='galeria.html'">Galería</button>
-  <button class="bottomu" id="con">Confeti</button>
+  <button class="bottomu" id="con" onclick="lanzarConfeti()">Confeti</button> 
   <button class="bottomu" id="mov">Moverse</button>
   <button id="esc" onclick="openf(this)">Escanea</button>
   <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
@@ -79,6 +80,16 @@
 
     function closefi() {
       document.getElementById('extendfi').classList.remove('showfi');
+    }
+
+    function lanzarConfeti() {
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 },
+        zIndex: 9999,
+        colors: ['#0339A6', '#FFB300', '#CA2407', '#FFFFFF']
+      });
     }
 
   </script>
