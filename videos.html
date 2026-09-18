@@ -1,85 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Galería de videos</title>
 
-        <link href="css/videos.css" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería de videos</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
-    </head>
+  <link href="css/videos.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+</head>
 
-    <body>
+<body>
+  <button id="back" onclick="window.location.href='galeria.html'"> 
+    <img id="back" src="media/imagenes/back.png">
+  </button>
+  
+  <div class="efecto">
+    <h1 class="trivia">Videos</h1>
+  </div>
 
-        <button id="back" onclick="window.location.href='galeria.html'"> <img id="back" src="media/imagenes/back.png"></button>
-      
-        
+  <div id="galeria">
+    <input type="text" id="bus" placeholder="Buscar video por título">
+    <br>
+    <br>
+    <br>
+    <img src="media/imagenes/mascot.png" alt="foto" id="foto" data-video="media/video/mascot.mp4" onclick="openf(this)">
+  </div>
 
-       
+  <div id="extend">
+    <video id="extendf" controls></video>
+    <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
+    <button id="filtros" onclick="openfi(this)">Filtros</button>
+  </div>
 
-        <div class="efecto">
-         <h1 class="trivia">Videos</h1>
-        </div>
+  <div id="extendfi">
+    <button id="hidefi" onclick="closefi()"><img src="media/imagenes/x.png" alt="X2" id="x2"></button>
+    <button id="des">Desenfoque</button>
+    <button id="pix">Pixelado</button>
+    <button id="col">Colores pastel</button>
+    <button id="ret">Retro digital</button>
+  </div>
 
-        <div id="galeria">
-            <input type="text" id="bus" placeholder="Buscar video por título">
-            <br>
-            <br>
-            <br>
-            <img src="media/imagenes/mascot.png" alt="foto" id="foto" data-video="media/video/mascot.mp4" onclick="openf(this)">
+  <script>
+    function openf(img) {
+      document.getElementById('extendf').src = img.dataset.video;
+      document.getElementById('extend').classList.add('show');
+    }
 
-            
-        </div>
+    function openfi(img) {
+      document.getElementById('extendfi').classList.add('showfi');
+    }
 
-    <div id="extend">
-        
-        <video id="extendf" controls></video>
-        <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
-        <button id="filtros" onclick="openfi(this)">Filtros</button>
+    function closef() {
+      const video = document.getElementById('extendf');
+      video.pause();
+      document.getElementById('extend').classList.remove('show');
+    }
 
-    </div>
-
-    <div id="extendfi">
-        
-        <button id="hidefi" onclick="closefi()"><img src="media/imagenes/x.png" alt="X2" id="x2"></button>
-        <button id="des">Desenfoque</button>
-        <button id="pix">Pixelado</button>
-        <button id="col">Colores pastel</button>
-        <button id="ret">Retro digital</button>
-
-    </div>
-
-<script>
-
-function openf(img) {
-    document.getElementById('extendf').src = img.dataset.video;
-    document.getElementById('extend').classList.add('show');
-}
-
-function openfi(img) {
-    document.getElementById('extendfi').classList.add('showfi');
-}
-
-function closef() {
-    const video = document.getElementById('extendf');
-    video.pause();
-    document.getElementById('extend').classList.remove('show');
-}
-
-function closefi() {
-    document.getElementById('extendfi').classList.remove('showfi');
-}
-
-
-</script>
-       
-        
-
-
-    </body>
-
+    function closefi() {
+      document.getElementById('extendfi').classList.remove('showfi');
+    }
+  </script>
+</body>
 
 </html>
