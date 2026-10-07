@@ -1,130 +1,144 @@
-html{
-  margin: 0;
-  padding: 0;
-}
-
-body
-{
+html {
     margin: 0;
-  padding: 0;
+    padding: 0;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(180deg, #889fdc, #0339a6, #1e2e86, #141e59);
+    min-height: 100vh;
+}
 
 div#head {
-    background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
+    background: linear-gradient(180deg, #f9d55c, #ffb300, #d97904, #9f5d09);
     margin: 0;
     min-height: 20vh;
     background-repeat: no-repeat;
+    position: relative;
 }
-
-div#body {
-    background: linear-gradient(180deg, #889FDC, #0339A6, #1E2E86, #141E59);
-    margin: 0;
-    min-height: 80vh;
-    background-repeat: no-repeat;
-    overflow: hidden;
-}
-
 
 button#back {
- border-top-left-radius: 0;
-   border-bottom-left-radius: 0;
-   border-top-right-radius: 20px;
-   border-bottom-right-radius: 20px;
-   margin-right:auto;
-   top:0;
-  left:0;
-  width: 70px;
-  height: 67px;
-  color: #4b2c04;
-  background: linear-gradient(180deg, #F8A5A2, #CA2407, #AE120A, #890200);
-  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
-}
-
-
-
-button#back:hover{
-   
-  background: #F8A5A2;
-}
-
-button#back:active
-{
-    background: #890200;
-    color: #F8A5A2;
-}
-
-img#back {
-    width: 40px;
-  height: 40px;
-   position:absolute;
-  left:10px;
-  top:10px;
-}
-
-button{
-    color: white;
-    font-size: larger;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-right: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70px;
+    height: 67px;
+    color: #4b2c04;
+    background: linear-gradient(180deg, #f8a5a2, #ca2407, #ae120a, #890200);
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
     border-color: black;
     font-family: 'Alfa Slab One', cursive;
-
+    z-index: 20;
 }
 
-img#usu {
+button#back:hover {
+    background: #f8a5a2;
+}
+
+button#back:active {
+    background: #890200;
+    color: #f8a5a2;
+}
+
+button#back img {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+img#fotoPerfil {
     width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  position: absolute;
-  top: 20vh;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;   
-  border: 2px solid black;          
+    height: 160px;
+    border-radius: 50%;
+    position: absolute;
+    top: 20vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    border: 2px solid black;
+    object-fit: cover;
+    background-color: #fff;
 }
 
- div#bio {
+div#contenedorBio {
     background-color: white;
     width: 90%;
-    height: 90%;
+    max-width: 90%;
     border: 4px solid black;
-    border-radius: 20%;
+    border-radius: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     margin: 0 auto;
+    margin-top: -30px;
     padding: 20px;
     box-sizing: border-box;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    max-height: 80vh;
+    max-height: 70vh;
     overflow-y: auto;
 }
 
-div#bio overflow-y{
-    right: 20%;
-}
-
-div#bio::-webkit-scrollbar {
+div#contenedorBio::-webkit-scrollbar {
     width: 8px;
 }
 
-div#bio::-webkit-scrollbar-track {
+div#contenedorBio::-webkit-scrollbar-track {
     background: transparent;
-    margin: 20px 0; 
+    margin: 20px 0;
 }
 
-div#bio::-webkit-scrollbar-thumb {
+div#contenedorBio::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 10px;
 }
 
-div#resto {
-    text-align: left;
-}
-
-h1 {
+h1#nombreUsuario {
+    font-family: 'Alfa Slab One', cursive;
     text-align: center;
     margin: 0;
+    margin-top: 20px;
+    color: #333;
 }
 
+label#infoUsuario {
+    font-weight: bold;
+    color: #666;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+div#resto {
+    width: 100%;
+    text-align: left;
+    margin-top: 15px;
+}
+
+div#resto h2 {
+    font-family: 'Alfa Slab One', cursive;
+    font-size: 1.1rem;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #1e2e86;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 3px;
+}
+
+div#resto label {
+    display: block;
+    margin-bottom: 5px;
+    color: #444;
+    line-height: 1.4;
+}

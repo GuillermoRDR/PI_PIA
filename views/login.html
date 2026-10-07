@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+  <script src="js/login.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 
 <body>
@@ -28,14 +30,17 @@
   <br>
   <br>
   <H1>Iniciar sesión</H1>
-  <h2>Correo eléctronico</h2>
-  <input type="email" placeholder="Correo Eléctronico">
-  <h2>Contraseña</h2>
-  <input type="password" placeholder="Contraseña">
-  <br>
-  <br>
-  <button onclick="window.location.href='principal.html'">Iniciar Sesión</button>
-  <br>
+  <form id="formIS">
+    <h2>Correo eléctronico</h2>
+    <input type="email" id="correo" placeholder="Correo Eléctronico" required>
+    <h2>Contraseña</h2>
+    <input type="password" id="contra" placeholder="Contraseña" required>
+    <br>
+    <br>
+    <br>
+    <button id="botonIS" type="submit">Iniciar Sesión</button>
+    <!--<button onclick="window.location.href='principal.html'">Iniciar Sesión</button>-->
+  </form>
   <br>
   <br>
   <h5>¿Aún no tienes cuenta en "¡BATEA!"?</h5>

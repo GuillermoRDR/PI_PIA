@@ -1,93 +1,159 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Configuración</title>
 
-        <link href="css/configuracion.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
-    </head>
+    <title>Configuración</title>
 
-    <body>
+    <link href="css/configuracion.css" rel="stylesheet">
 
-       
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-       <button id="back" onclick="window.location.href='principal.html'"> <img id="back" src="media/imagenes/back.png"></button>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
-       <h1>Configuración</h1>
-       <br>
-       <br>
-       <br>
-       <h2>General</h2>
-       <br>
-       <br>
-       <br>
-       <div id="música">
-        <input type="checkbox" checked>
-        <label>Música.</label>
-       </div>
-       <br>
-       <br>
-       <br>
-       <div id="sfx">
-        <input type="checkbox" checked>
-        <label>Efectos de sonido.</label>
-       </div>
-       <br>
-       <br>
-       <br>
-       <div id="vibra">
-        <input type="checkbox" checked>
-        <label>Vibración.</label>
-       </div>
+    <script src="js/configApp.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+</head>
 
-       <br>
-       <br>
-       <br>
+<body>
+    <button class="config-back-button" id="configBackButton" type="button" onclick="window.location.href='/principal'">
+
+        <img class="config-back-icon" src="media/imagenes/back.png" alt="Regresar">
+
+    </button>
+
+    <h1 class="config-title">
+        Configuración
+    </h1>
+    <section class="config-section">
+
+        <h2 class="config-section-title">
+            General
+        </h2>
 
 
-       <h2>Realidad Aumentada</h2>
-         <br>
-       <br>
-       <br>
-       <div id="part">
-        <input type="checkbox" checked>
-        <label>Efectos de partículas.</label>
-       </div>
-       <br>
-       <br>
-       <br>
-       <div id="re">
-        <input type="checkbox" checked>
-        <label>Recalibrar AR.</label>
-       </div>
-       <br>
-       <br>
-       <br>
-       <div id="pos">
-        <input type="checkbox" checked>
-        <label>Recalibrar posision del modelo.</label>
-       </div>
+        <div class="config-option">
 
-       <footer>
-<label>Versión 1.2.0</label>
-<br>
-        <label>Creditos:</label>
+            <input class="config-checkbox" id="musicToggle" type="checkbox" checked>
+
+            <label class="config-option-label" for="musicToggle">
+                Música
+            </label>
+
+        </div>
+
+        <div class="config-option">
+
+            <input class="config-checkbox" id="sfxToggle" type="checkbox" checked>
+
+            <label class="config-option-label" for="sfxToggle">
+                Efectos de sonido
+            </label>
+
+        </div>
+
+
+        <div class="config-option">
+
+            <input class="config-checkbox" id="vibrationToggle" type="checkbox" checked>
+
+            <label class="config-option-label" for="vibrationToggle">
+                Vibración
+            </label>
+
+        </div>
+
+    </section>
+
+    <section class="config-section">
+
+        <h2 class="config-section-title">
+            Realidad Aumentada
+        </h2>
+
+        <div class="config-option">
+
+            <input class="config-checkbox" id="particlesToggle" type="checkbox" checked>
+
+            <label class="config-option-label" for="particlesToggle">
+                Efectos de partículas
+            </label>
+
+        </div>
+
+        <div class="config-option">
+
+            <span class="config-option-label">
+                Recalibrar AR
+            </span>
+
+            <button class="config-action-button" id="recalibrateArButton" type="button">
+                Recalibrar
+            </button>
+
+        </div>
+
+        <div class="config-option">
+
+            <span class="config-option-label">
+                Posición del modelo
+            </span>
+
+            <button class="config-action-button" id="recalibrateModelButton" type="button">
+                Recalibrar
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <section class="config-section config-account-section">
+
+        <h2 class="config-section-title">
+            Cuenta
+        </h2>
+
+        <div class="config-option config-logout-option">
+
+            <span class="config-option-label">
+                Cerrar sesión
+            </span>
+
+            <button class="config-logout-button" id="btnCS" type="button">
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    </section>
+
+    <footer class="config-footer">
+
+        <span>Versión 1.2.0</span>
+
+        <br>
+
+        <span>Créditos:</span>
+
         <br>
         <br>
-        <label>Guillermo René Dávila Roque. 2003063​.</label>
+
+        <span>
+            Guillermo René Dávila Roque. 2003063.
+        </span>
+
         <br>
-       <label>Juan Enrique Leal Gutiérrez. 1957848.</label>
-       </footer>
 
+        <span>
+            Juan Enrique Leal Gutiérrez. 1957848.
+        </span>
 
+    </footer>
 
-
-    </body>
-
+</body>
 
 </html>
