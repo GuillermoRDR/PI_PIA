@@ -1,120 +1,211 @@
-html{
+html {
   margin: 0;
   padding: 0;
+  min-height: 100%;
 }
 
 body {
-    background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
-    margin: 0;
-    min-height: 100vh;
-    background-repeat: no-repeat;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg,
+      #F9D55C,
+      #FFB300,
+      #D97904,
+      #9F5D09);
+  font-family: Arial, sans-serif;
 }
 
-
-button#back {
- border-top-left-radius: 0;
-   border-bottom-left-radius: 0;
-   border-top-right-radius: 20px;
-   border-bottom-right-radius: 20px;
-   margin-right:auto;
-   top:0;
-  left:0;
+.config-back-button {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 70px;
   height: 67px;
-  color: #4b2c04;
-  background: linear-gradient(180deg, #F8A5A2, #CA2407, #AE120A, #890200);
-  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+  padding: 0;
+  border: 2px solid #4b2c04;
+  border-left: none;
+  border-radius: 0 20px 20px 0;
+  background: linear-gradient(180deg,
+      #F8A5A2,
+      #CA2407,
+      #AE120A,
+      #890200);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
 }
 
-
-
-button#back:hover{
-   
+.config-back-button:hover {
   background: #F8A5A2;
 }
 
-button#back:active
-{
-    background: #890200;
-    color: #F8A5A2;
+.config-back-button:active {
+  background: #890200;
+  transform: translateY(2px);
 }
 
-img#back {
-    width: 40px;
+.config-back-icon {
+  width: 40px;
   height: 40px;
-   position:absolute;
-  left:10px;
-  top:10px;
+  display: block;
+  margin: auto;
 }
 
-button{
-    color: white;
-    font-size: larger;
-    border-color: black;
-    font-family: 'Alfa Slab One', cursive;
-
+.config-title {
+  margin: 0;
+  padding-top: 25px;
+  text-align: center;
+  color: #AE120A;
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 32px;
+  text-shadow:
+    -5px 5px 3px rgba(0, 0, 0, 0.5);
 }
 
- h1 {
-    color: #AE120A;
-    text-shadow: -5px 5px 3px rgba(0, 0, 0, 0.5);
-    font-family: 'Alfa Slab One', cursive;
-    position: fixed;
+.config-section {
+  width: 90%;
+  max-width: 700px;
+  margin: 45px auto 0;
+}
 
-  left: 50%;
-  transform: translate(-50%, -50%);
- }
+.config-section-title {
+  margin: 0 0 20px 5%;
+  color: #4a3200;
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 22px;
+}
 
- h2 {
-    position: fixed;
-
-  left: 10%;
-  transform: translate(-10%);
- }
-
- div{
-    display: inline-flex;
-  gap: 10px;
+.config-option {
+  width: 100%;
+  height: 70px;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   background: #FFE58A;
   border: 3px dashed #E8850B;
   border-radius: 30px;
-  width: 90%;
-  padding: 8px;
   color: #4a3200;
-  text-align: left;
-  position: fixed;
-    left: 50%;
-    transform: translate(-50%);
- }
-
- input[type="checkbox"] {
-    appearance: none;
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-    color:#E8850B;
-    background-color: #141E59;
-    border: 4px solid #4a3200;
-  cursor: pointer;
-  border-radius: 30px;
-  border-color: #0339A6;
- }
-
- input[type="checkbox"]:checked {
-  background-color: #E8850B;    
-
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.20);
 }
 
- footer
- {
-    background-color: black;
-    color: white;
-    position: fixed;
-    left: 50%;
-    bottom: 0%;
-    transform: translate(-50%);
-    width: 100%;
-    margin: 0;
-    padding: 10px, 0;
-    text-align: center; 
- }
+.config-option-label {
+  flex: 1;
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+.config-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  flex-shrink: 0;
+  background-color: #141E59;
+  border: 3px solid #0339A6;
+  border-radius: 7px;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease,
+    box-shadow 0.15s ease;
+}
+
+.config-checkbox:hover {
+  border-color: #E8850B;
+  box-shadow:
+    0 0 0 3px rgba(232, 133, 11, 0.20);
+}
+
+.config-checkbox:active {
+  transform: scale(0.90);
+}
+
+.config-checkbox:checked {
+  background-color: #E8850B;
+  border-color: #4a3200;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.15),
+    0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+.config-checkbox:checked::after {
+  content: "✓";
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.config-action-button,
+.config-logout-button {
+  flex-shrink: 0;
+  padding: 9px 18px;
+  border: 2px solid #4b2c04;
+  border-radius: 15px;
+  background: linear-gradient(180deg,
+      #F8A5A2,
+      #CA2407,
+      #AE120A,
+      #890200);
+  color: white;
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 14px;
+  cursor: pointer;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.30);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background 0.15s ease;
+}
+
+.config-action-button:hover,
+.config-logout-button:hover {
+  background: #F8A5A2;
+  transform: translateY(-2px);
+  box-shadow:
+    0 5px 8px rgba(0, 0, 0, 0.30);
+}
+
+.config-action-button:active,
+.config-logout-button:active {
+  background: #890200;
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.30);
+}
+
+.config-account-section {
+  margin-bottom: 160px;
+}
+
+.config-logout-option {
+  justify-content: space-between;
+}
+
+.config-footer {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: auto;
+  padding: 10px 0;
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+}

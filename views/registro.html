@@ -10,28 +10,38 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+  <script src="js/registro.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 
 <body>
   <H1>Registro</H1>
-  <img src="media/imagenes/fedep.png" alt="usuario">
   <br>
   <br>
   <br>
-  <h2>Nombre de usuario</h2>
-  <input type="text" placeholder="Nombre de usuario">
-  <h2>Correo eléctronico</h2>
-  <input type="email" placeholder="Correo Eléctronico">
-  <h2>Contraseña</h2>
-  <input type="password" placeholder="Contraseña">
-  <h2>Confirmar contraseña</h2>
-  <input type="password" placeholder="Contraseña">
-  <br>
-  <br>
-  <button onclick="window.location.href='login.html'">Registrar cuenta</button>
+  <form id="form">
+    <div class="fotoContenedorPerfil">
+      <img id="fotoPrevis" src="media/imagenes/fedep.png" alt="Foto de perfil">
+      <button type="button" id="fotoSelecciona">
+        +
+      </button>
+      <input type="file" id="fotoIngresa" name="fotoPerfil" accept="image/png, image/jpeg, image/webp">
+    </div>
+    <h2>Nombre de usuario</h2>
+    <input type="text" id="nombre" name="nombre" placeholder="Nombre de usuario" minlength="3" required>
+    <h2>Correo eléctronico</h2>
+    <input type="email" id="correo" name="email" placeholder="Correo Eléctronico" required>
+    <h2>Contraseña</h2>
+    <input type="password" id="contra" name="contra" placeholder="Contraseña" required>
+    <h2>Confirmar contraseña</h2>
+    <input type="password" id="verificarContra" name="verificarContra" placeholder="Confirmar contraseña">
+    <br>
+    <br>
+    <button type="submit">Registrar cuenta</button>
+  </form>
   <br>
   <h5>¿Ya tienes una cuenta en "¡BATEA!"?</h5>
-  <h6 onclick="window.location.href='login.html'">Inicia sesión Aquí.</h6>
+  <h6 onclick="window.location.href='/login'">Inicia sesión Aquí.</h6>
 
 </body>
 
