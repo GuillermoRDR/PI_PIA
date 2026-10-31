@@ -142,3 +142,22 @@ div#resto label {
     color: #444;
     line-height: 1.4;
 }
+
+.perfil-favorita {
+  text-align: center;
+}
+
+#perfil-carta-favorita img {
+  width: min(100%, 220px);
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+#perfil-carta-favorita h3 {
+  font-family: 'Alfa Slab One', cursive;
+}
+
+#perfil-carta-favorita p {
+  color: #9F5D09;
+}

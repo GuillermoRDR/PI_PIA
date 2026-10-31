@@ -4,29 +4,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recompensas</title>
 
-  <link href="css/recompensas.css" rel="stylesheet">
+  <title>Mi colección | Batea</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/recompensas.css">
+  <script src="/js/recompensas.js" defer></script>
 </head>
 
 <body>
-  <h1>Has conseguido <br>las siguientes cartas:</h1>
-  <br>
-  <br>
-  <br>
-  <br>
-  <img src="media/imagenes/card.jpg" alt="card" id="a1">
-  <img src="media/imagenes/card.jpg" alt="card" id="a2">
-  <img src="media/imagenes/card.jpg" alt="card" id="a3">
-  <br>
-  <br>
-  <br>
-  <br>
-  <h3>¡Ahora disponibles en la galería!</h3>
-  <button id="recomp" onclick="window.location.href='principal.html'">Regresar a la pantalla principal</button>
+  <main class="contenedor">
+
+    <header class="encabezado">
+      <span class="etiqueta">GALERÍA · CARTAS</span>
+
+      <h1>MI COLECCIÓN</h1>
+
+      <p>
+        Colecciona las cartas de los 15 equipos
+        de la Liga Mexicana de Béisbol.
+      </p>
+    </header>
+
+    <section class="panel-puntos">
+      <div class="informacion-puntos">
+        <span class="etiqueta-puntos">
+          PUNTOS DISPONIBLES
+        </span>
+
+        <strong id="saldo">0</strong>
+
+        <small>
+          Cada carta cuesta
+          <span id="costo">100</span> puntos.
+        </small>
+      </div>
+
+      <div class="acciones-puntos">
+        <button id="canjear" disabled>
+          CANJEAR CARTA
+        </button>
+
+        <p id="mensaje" role="status"></p>
+      </div>
+    </section>
+
+    <section class="coleccion">
+      <div class="encabezado-coleccion">
+        <div>
+          <h2>CARTAS COLECCIONABLES</h2>
+          <p>
+            Selecciona una carta desbloqueada
+            para ver sus detalles.
+          </p>
+        </div>
+
+        <span id="progreso" class="contador">
+          0 de 15 cartas
+        </span>
+      </div>
+
+      <div id="cartas" class="cuadricula"></div>
+    </section>
+
+    <a class="volver" href="/">
+      VOLVER AL INICIO
+    </a>
+  </main>
+
+  <dialog id="modal-carta" class="modal">
+    <button id="cerrar-carta" class="cerrar-modal" type="button" aria-label="Cerrar detalles de la carta">
+      &times;
+    </button>
+
+    <div class="detalle-carta">
+      <div class="detalle-imagen">
+        <img id="detalle-imagen" alt="Carta coleccionable">
+      </div>
+
+      <div class="detalle-informacion">
+        <span class="etiqueta">
+          CARTA DESBLOQUEADA
+        </span>
+
+        <h2 id="detalle-titulo"></h2>
+
+        <p id="detalle-equipo" class="nombre-equipo"></p>
+
+        <div class="rareza-detalle">
+          <span>RAREZA</span>
+          <div id="detalle-estrellas" class="estrellas"></div>
+          <small id="detalle-rareza"></small>
+        </div>
+
+        <p id="detalle-descripcion"></p>
+
+        <p id="detalle-fecha" class="fecha-obtencion"></p>
+
+        <div class="acciones-carta">
+          <button id="boton-favorita" type="button">
+            AGREGAR A FAVORITAS
+          </button>
+
+          <button id="boton-compartir" type="button">
+            COMPARTIR
+          </button>
+        </div>
+
+        <p id="mensaje-carta" role="status"></p>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="modal-premio" class="modal modal-premio">
+    <div class="contenido-premio">
+      <span class="etiqueta">RECOMPENSA OBTENIDA</span>
+
+      <h2>¡NUEVA CARTA!</h2>
+
+      <img id="premio-imagen" alt="Carta obtenida">
+
+      <h3 id="premio-nombre"></h3>
+
+      <button id="cerrar-premio" type="button">
+        CONTINUAR
+      </button>
+    </div>
+  </dialog>
+
 </body>
 
 </html>

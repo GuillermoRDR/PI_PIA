@@ -4,43 +4,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trivia</title>
-  
-  <link href="css/trivia.css" rel="stylesheet">
+
+  <title>Trivia | Batea</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/trivia.css">
+  <script src="/js/trivia.js" defer></script>
 </head>
 
 <body>
-  <label id="num">Pregunta 1/10</label>
-  <br>
-  <h1 id="preguntan">Pregunta Número 1:</h1>
-  <h1 id="pregunta">¿Qué deporte es éste? </h1>
-  <img id="miniatura" src="media/imagenes/thumb.jpg" alt="mini">
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <button id="starta" class="error">Fútbol</button>
-  <br>
-  <br>
-  <button id="startb" class="error">Basquetball</button>
-  <br>
-  <br>
-  <button id="startc" class="ok" onclick="window.location.href='resultados.html'">Baseball</button>
-  <br>
-  <br>
-  <button id="startd" class="error">Golf</button>
+  <main class="trivia-contenedor">
+
+    <section id="introduccion" class="pantalla">
+      <span class="etiqueta">BATEA · LMB</span>
+
+      <h1 class="titulo-principal">
+        TRIVIA BATEA
+      </h1>
+
+      <p class="descripcion">
+        Demuestra cuánto sabes sobre los equipos de la
+        Liga Mexicana de Béisbol y consigue puntos
+        para desbloquear cartas coleccionables.
+      </p>
+
+      <div class="informacion">
+        <div class="dato">
+          <strong>5</strong>
+          <span>Preguntas por intento</span>
+        </div>
+
+        <div class="dato">
+          <strong>50</strong>
+          <span>Puntos máximos</span>
+        </div>
+      </div>
+
+      <p class="instrucciones">
+        Cada respuesta correcta otorga 10 puntos.
+        No hay límite de tiempo.
+      </p>
+
+      <button id="comenzar" class="boton-principal">
+        COMENZAR
+      </button>
+
+      <a class="enlace-volver" href="/">
+        Volver al inicio
+      </a>
+    </section>
+
+    <section id="juego" class="pantalla" hidden>
+
+      <header class="cabecera-trivia">
+        <span class="etiqueta">TRIVIA BATEA</span>
+        <span id="progreso">Pregunta 1 de 5</span>
+      </header>
+
+      <div class="barra-progreso">
+        <div id="progreso-barra"></div>
+      </div>
+
+      <h2 id="preguntan" class="subtitulo">
+        PREGUNTA 1
+      </h2>
+
+      <h1 id="pregunta" class="titulo-pregunta"></h1>
+
+      <p id="equipo-pregunta" class="equipo-pregunta"></p>
+
+      <figure id="contenedor-imagen" class="imagen-pregunta" hidden>
+        <img id="miniatura" alt="Imagen ilustrativa de la pregunta" loading="eager">
+      </figure>
+
+      <div id="opciones" class="opciones"></div>
+
+      <p id="mensaje" class="mensaje" role="status"></p>
+
+      <button id="siguiente" class="boton-principal" hidden>
+        SIGUIENTE PREGUNTA
+      </button>
+    </section>
+
+    <section id="resultado" class="pantalla" hidden>
+
+      <span class="etiqueta">TRIVIA COMPLETADA</span>
+
+      <h1 class="titulo-principal">
+        ¡FIN DEL JUEGO!
+      </h1>
+
+      <div class="informacion">
+        <div class="dato">
+          <strong id="aciertos">0/5</strong>
+          <span>Respuestas correctas</span>
+        </div>
+
+        <div class="dato">
+          <strong id="puntos">0</strong>
+          <span>Puntos ganados</span>
+        </div>
+      </div>
+
+      <p id="resumen" class="descripcion"></p>
+
+      <button id="reiniciar" class="boton-principal">
+        JUGAR OTRA VEZ
+      </button>
+
+      <a class="enlace-volver" href="/">
+        Volver al inicio
+      </a>
+    </section>
+
+    <p id="error-general" class="error-general" role="alert" hidden></p>
+
+  </main>
 </body>
 
 </html>
