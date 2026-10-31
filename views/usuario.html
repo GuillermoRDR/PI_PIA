@@ -10,14 +10,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
-  
+
   <script src="js/perfil.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 </head>
 
 <body>
   <div id="head">
-    <button id="back" onclick="window.location.href='/principal'"> 
+    <button id="back" onclick="window.location.href='/principal'">
       <img src="media/imagenes/back.png" alt="Volver">
     </button>
   </div>
@@ -28,7 +28,7 @@
     <br><br><br><br>
     <h1 id="nombreUsuario">Cargando...</h1>
     <label id="infoUsuario">Cargando datos...</label>
-    
+
     <div id="resto">
       <h2>Biografía</h2>
       <label id="textoBio">Cargando biografía...</label>
@@ -38,8 +38,13 @@
       <br>
       <label> Trivia: 100 Puntos.</label>
       <br>
-      <h2>Cartas Favoritas:</h2>
-      <label>Todavía no tienes cartas favoritas.</label>
+      <section class="perfil-favorita">
+        <h2>MI CARTA FAVORITA</h2>
+
+        <div id="perfil-carta-favorita">
+          <p>Cargando carta favorita...</p>
+        </div>
+      </section>
     </div>
   </div>
 </body>

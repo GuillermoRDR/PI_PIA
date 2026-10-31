@@ -14,8 +14,11 @@ async function crearUsuario(nombre, email, contrasenaHash, fotoPerfilUrl = null)
   return result.rows[0];
 }
 
-async function obtenerPorId(idUsuario){
-  const query = 'SELECT * FROM usuario where usuario_id = $1'
+async function obtenerPorId(idUsuario) {
+  const query = `SELECT usuario_id, nombre, email, foto_perfil_url, equipo_favorito_id, creado_en
+    FROM usuario
+    WHERE usuario_id = $1`;
+
   const result = await pool.query(query, [idUsuario]);
   return result.rows[0];
 }

@@ -70,3 +70,62 @@ async function actualizarPerfil(foto, nombre, info, bio) {
     });
   }
 }
+
+
+async function cargarCartaFavorita() {
+  const contenedor = document.getElementById(
+    'perfil-carta-favorita'
+  );
+
+  if (!contenedor) return;
+
+  try {
+    const respuesta = await fetch(
+      '/api/recompensas/favorita',
+      { credentials: 'same-origin' }
+    );
+
+    if (!respuesta.ok) {
+      throw new Error('Error al cargar la favorita');
+    }
+
+    const { carta } = await respuesta.json();
+
+    contenedor.replaceChildren();
+
+    if (!carta) {
+      const mensaje = document.createElement('p');
+
+      mensaje.textContent =
+        'Todavía no has seleccionado una carta favorita.';
+
+      contenedor.appendChild(mensaje);
+      return;
+    }
+
+    const imagen = document.createElement('img');
+    imagen.alt = carta.titulo;
+
+    if (carta.imagen_url) {
+      imagen.src = carta.imagen_url;
+    } else {
+      imagen.hidden = true;
+    }
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = carta.titulo;
+
+    const estrellas = document.createElement('p');
+    estrellas.textContent =
+      '★'.repeat(carta.rareza) +
+      '☆'.repeat(5 - carta.rareza);
+
+    contenedor.append(imagen, titulo, estrellas);
+
+  } catch (error) {
+    contenedor.textContent =
+      'No se pudo cargar la carta favorita.';
+  }
+}
+
+cargarCartaFavorita();
