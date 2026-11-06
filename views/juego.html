@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+  <link href="css/juego.css?v=4" rel="stylesheet">
+</head>
+<body>
+
+  <section id="introduccion" class="pantalla">
+    <button id="back" type="button" aria-label="Volver" onclick="location.href='principal.html'">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>
+      </svg>
+    </button>
+
+    <p class="etiqueta">BATEA · LMB</p>
+    <h1 class="titulo-principal">¡BATEA!</h1>
+    <p class="descripcion">Demuestra tu puntería y consigue puntos para desbloquear cartas coleccionables.</p>
+
+    <div class="informacion">
+      <div class="dato">
+        <strong>3</strong>
+        <span>Strikes por intento</span>
+      </div>
+      <div class="dato">
+        <strong>1000</strong>
+        <span>Puntos máximos</span>
+      </div>
+    </div>
+
+    <p class="instrucciones">Toca en el momento justo para golpear la pelota.</p>
+    <button id="comenzar" class="boton-principal" type="button">Comenzar</button>
+  </section>
+
+  <section id="juego" hidden>
+    <div id="escenario">
+      <img id="bateador" src="media/imagenes/player.png" alt="Bateador">
+
+      <p id="puntos">0 pts</p>
+      <p id="zona"></p>
+      <p id="mensaje"></p>
+
+      <div id="barra">
+        <div id="barra-relleno"></div>
+      </div>
+
+      <div id="strikes">
+        <span class="strike"></span>
+        <span class="strike"></span>
+        <span class="strike"></span>
+      </div>
+
+      <div id="bate">
+        <div id="pelota"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resultado" class="pantalla" hidden>
+    <p class="etiqueta">JUEGO TERMINADO</p>
+    <h2 id="resultado-titulo" class="titulo-principal"></h2>
+    <p id="resultado-estadisticas" class="descripcion"></p>
+    <button id="otra" class="boton-principal" type="button">Batear de nuevo</button>
+    <a class="enlace-volver" href="principal.html">Volver al inicio</a>
+  </section>
+
+  <script src="js/juego.js"></script>
+</body>
+</html>
