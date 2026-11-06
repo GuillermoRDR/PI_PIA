@@ -204,6 +204,24 @@ CREATE TABLE movimiento_puntos (
     )
 );
 
+CREATE TABLE estadistica_equipo (
+    estadistica_id SERIAL PRIMARY KEY,
+    equipo_id INTEGER NOT null REFERENCES equipo(equipo_id) ON DELETE CASCADE,
+    temporada SMALLINT NOT null CHECK (temporada >= 1925),
+    fase VARCHAR(20) NOT NULL DEFAULT 'regular' CHECK (fase IN ('regular', 'playoffs')),
+    juegos_jugados INTEGER NOT NULL DEFAULT 0 CHECK (juegos_jugados >= 0),
+    victorias INTEGER NOT NULL DEFAULT 0 CHECK (victorias >= 0),
+    derrotas INTEGER NOT NULL DEFAULT 0 CHECK (derrotas >= 0),
+    carreras_anotadas INTEGER NOT NULL DEFAULT 0 CHECK (carreras_anotadas >= 0),
+    carreras_permitidas INTEGER NOT NULL DEFAULT 0 CHECK (carreras_permitidas >= 0),
+    posicion smallint CHECK (posicion > 0),
+    fuente_url TEXT,
+    actualizado_en TIMESTAMPTZ NOT null DEFAULT NOW(),
+
+    CONSTRAINT uq_estadistica_equipo UNIQUE (equipo_id, temporada, fase),
+    CONSTRAINT chk_partidos CHECK (victorias + derrotas <= juegos_jugados)
+);
+
 CREATE UNIQUE INDEX uq_puntos_trivia
 ON movimiento_puntos(intento_id)
 WHERE origen = 'trivia';
@@ -248,6 +266,9 @@ ON usuario_carta(usuario_id);
 
 CREATE INDEX idx_movimiento_usuario
 ON movimiento_puntos(usuario_id);
+
+CREATE INDEX idx_estadistica_equipo 
+ON estadistica_equipo(equipo_id, temporada DESC);
 
 CREATE VIEW vista_saldo_puntos AS
 SELECT
@@ -370,3 +391,34 @@ END;
 $$;
 
 COMMIT;
+
+CREATE OR REPLACE VIEW vista_estadisticas_equipo AS
+SELECT
+    e.equipo_id,
+    e.target_index_e,
+    e.nombre,
+    e.logo_url,
+
+    s.temporada,
+    s.fase,
+    s.juegos_jugados,
+    s.victorias,
+    s.derrotas,
+    s.carreras_anotadas,
+    s.carreras_permitidas,
+    s.posicion,
+
+    CASE
+        WHEN s.victorias + s.derrotas > 0
+        THEN ROUND(
+            s.victorias::NUMERIC /
+            (s.victorias + s.derrotas),
+            3
+        )
+        ELSE NULL
+    END AS porcentaje_victorias
+
+FROM equipo e
+JOIN estadistica_equipo s
+    ON e.equipo_id = s.equipo_id;
+

@@ -42,11 +42,11 @@ async function iniciarIntento(usuarioId) {
 
     const triviaId = trivia.rows[0].trivia_id;
 
-    // Priorizar preguntas nunca asignadas al usuario.
     const preguntas = await db.query(`
       SELECT p.pregunta_id
       FROM pregunta_trivia p
       WHERE p.trivia_id = $2
+        AND p.activa = TRUE
         AND (
           SELECT COUNT(*)
           FROM opcion_respuesta o
@@ -70,6 +70,9 @@ async function iniciarIntento(usuarioId) {
         RANDOM()
       LIMIT 5
     `, [usuarioId, triviaId]);
+
+
+
 
     if (preguntas.rows.length !== 5) {
       throw new Error('No hay suficientes preguntas válidas');

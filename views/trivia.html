@@ -19,6 +19,10 @@
 <body>
   <main class="trivia-contenedor">
 
+    <button id="back" onclick="window.location.href='/principal'">
+      <img id="back" src="media/imagenes/back.png">
+    </button>
+
     <section id="introduccion" class="pantalla">
       <span class="etiqueta">BATEA · LMB</span>
 
@@ -52,10 +56,6 @@
       <button id="comenzar" class="boton-principal">
         COMENZAR
       </button>
-
-      <a class="enlace-volver" href="/">
-        Volver al inicio
-      </a>
     </section>
 
     <section id="juego" class="pantalla" hidden>
@@ -115,10 +115,6 @@
       <button id="reiniciar" class="boton-principal">
         JUGAR OTRA VEZ
       </button>
-
-      <a class="enlace-volver" href="/">
-        Volver al inicio
-      </a>
     </section>
 
     <p id="error-general" class="error-general" role="alert" hidden></p>

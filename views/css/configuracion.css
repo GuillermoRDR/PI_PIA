@@ -1,3 +1,15 @@
+:root {
+  --fondo: #e1d2a1;
+  --amarillo: #FFB300;
+  --amarillo-claro: #F9D55C;
+  --naranja: #D97904;
+  --naranja-oscuro: #9F5D09;
+  --rojo: #E8402A;
+  --oscuro: #3a3226;
+  --naranja-claro: #F08C00;
+  --fuente: 'Alfa Slab One', cursive;
+}
+
 html {
   margin: 0;
   padding: 0;
@@ -54,16 +66,6 @@ body {
   margin: auto;
 }
 
-.config-title {
-  margin: 0;
-  padding-top: 25px;
-  text-align: center;
-  color: #AE120A;
-  font-family: 'Alfa Slab One', cursive;
-  font-size: 32px;
-  text-shadow:
-    -5px 5px 3px rgba(0, 0, 0, 0.5);
-}
 
 .config-section {
   width: 90%;
@@ -208,4 +210,19 @@ body {
   font-family: Arial, sans-serif;
   font-size: 13px;
   line-height: 1.4;
+}
+
+.config-title {
+  text-shadow:
+    -2px 2px 0 #f08c00,
+    -4px 4px 0 #f08c00,
+    -6px 6px 0 var(--rojo),
+    -8px 8px 0 var(--rojo),
+    -10px 10px 0 var(--oscuro);
+  margin: 0;
+  padding-top: 25px;
+  color: var(--amarillo);
+  text-align: center;
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 32px;
 }

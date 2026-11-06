@@ -6,98 +6,161 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>¡BATEA!</title>
   <link rel="icon" href="media/imagenes/BASET.png">
-  <link href="css/principal.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/principal.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+  <script>
+    (() => {
+      const original = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (tipo, atributos) {
+        if (['webgl', 'webgl2', 'experimental-webgl'].includes(tipo)) {
+          atributos = { ...atributos, preserveDrawingBuffer: true };
+        }
+        return original.call(this, tipo, atributos);
+      };
+    })();
+  </script>
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <script src="js/principal.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://kit.fontawesome.com/cb69cc3bd3.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script src="js/principal.js" defer></script>
 </head>
 
 <body>
-  <button id="conf" onclick="window.location.href='/configuracion'"> 
-    <img id="conf" src="media/imagenes/Conf.png">
+  <!-- Menú principal: conserva sus identificadores y apariencia original -->
+  <button id="conf" type="button"><img id="confIcon" src="media/imagenes/Conf.png" alt="Configuración"></button>
+  <button id="usu" type="button">
+    <span id="nombreUsuario">Usuario</span>
+    <img id="prof" src="media/imagenes/fedep.png" alt="Foto de perfil">
   </button>
-  <button id="usu" onclick="window.location.href='/perfil'">Usuario 
-    <img id="prof" src="media/imagenes/fedep.png">
-  </button>
-  <br>
-  <img id="logo" src="media/imagenes/BASET.png" alt="bat">
-
-  <button class="bottom" id="tri" onclick="window.location.href='/trivia'">Trivia</button>
-  <button class="bottom" id="gal" onclick="window.location.href='galeria.html'">Galería</button>
-  <button id="esc" onclick="openf(this)">Escanea</button>
+  <img id="logo" src="media/imagenes/BASET.png" alt="Batea">
+  <button class="bottom" id="tri" type="button">Trivia</button>
+  <button class="bottom" id="gal" type="button">Galería</button>
+  <button id="esc" type="button">Escanea</button>
   <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
 
-  <div id="extend">
+  <!-- Escáner y visualizador AR: una sola escena para los 15 equipos -->
+  <div id="extend" role="dialog" aria-label="Escáner de realidad aumentada" aria-modal="true">
     <div id="arContainer"></div>
-    <div id="arOverlay"></div>
-    <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
-    <h2 id="scanStatus">Escaneando...</h2>
+    <div id="arOverlay" aria-hidden="true"></div>
+    <button id="hide" type="button" aria-label="Cerrar escáner"><img src="media/imagenes/x.png" alt="Cerrar"></button>
+    <h2 id="scanStatus" aria-live="polite">Escaneando...</h2>
+
+    <div id="arControls" hidden>
+      <button id="arInfo" type="button">Estadísticas e historia</button>
+      <button id="arTri" class="bottom" type="button">Trivia</button>
+      <button id="arGal" class="bottom" type="button">Galería</button>
+      <button id="con" class="bottomu" type="button">Confeti</button>
+      <button id="mov" class="bottomu" type="button" disabled>Animar</button>
+      <button id="arFoto" type="button" aria-label="Tomar fotografía"><i class="fa-solid fa-camera"></i></button>
+    </div>
+
+    <div id="extendfi" role="dialog" aria-label="Información del equipo" aria-modal="true">
+      <button id="hidefi" type="button" aria-label="Cerrar información"><img src="media/imagenes/x.png"
+          alt="Cerrar"></button>
+      <div id="his">
+        <h3 id="ar-equipo-nombre">Equipo</h3>
+        <img id="ar-equipo-logo" alt="Logo del equipo">
+        <nav class="equipo-tabs" aria-label="Apartados del equipo">
+          <button class="equipo-tab activo" type="button" data-tab="historia">
+            Historia
+          </button>
+          <button class="equipo-tab" type="button" data-tab="estadisticas">
+            Estadísticas
+          </button>
+          <button class="equipo-tab" type="button" data-tab="descripcion">
+            Descripción
+          </button>
+        </nav>
+        <section class="equipo-seccion activo" id="tab-historia">
+          <h4>Historia del equipo</h4>
+          <p id="ar-equipo-historia"></p>
+        </section>
+        <section class="equipo-seccion" id="tab-estadisticas" hidden>
+
+          <h4>Estadísticas del equipo</h4>
+
+          <p class="estadisticas-temporada">
+            Temporada regular:
+            <strong id="stat-temporada">—</strong>
+          </p>
+
+          <div class="estadisticas-grid">
+
+            <article class="estadistica-card">
+              <strong id="stat-posicion">—</strong>
+              <span>Posición general</span>
+            </article>
+
+            <article class="estadistica-card">
+              <strong id="stat-juegos">—</strong>
+              <span>Juegos jugados</span>
+            </article>
+
+            <article class="estadistica-card">
+              <strong id="stat-victorias">—</strong>
+              <span>Victorias</span>
+            </article>
+
+            <article class="estadistica-card">
+              <strong id="stat-derrotas">—</strong>
+              <span>Derrotas</span>
+            </article>
+
+          </div>
+
+          <h4>Rendimiento de temporada</h4>
+
+          <div class="estadisticas-detalle">
+            <div>
+              <span>Porcentaje de victorias</span>
+              <strong id="stat-porcentaje">—</strong>
+            </div>
+
+            <div>
+              <span>Carreras anotadas</span>
+              <strong id="stat-carreras-anotadas">—</strong>
+            </div>
+
+            <div>
+              <span>Carreras permitidas</span>
+              <strong id="stat-carreras-permitidas">—</strong>
+            </div>
+
+            <div>
+              <span>Diferencial de carreras</span>
+              <strong id="stat-diferencial">—</strong>
+            </div>
+          </div>
+
+          <p id="stat-mensaje" hidden>
+            Estadísticas no disponibles.
+          </p>
+
+
+        </section>
+        <section class="equipo-seccion" id="tab-descripcion" hidden>
+          <h4>Descripción</h4>
+          <p id="ar-equipo-descripcion"></p>
+          <h4>Ciudad</h4>
+          <p id="ar-equipo-ciudad"></p>
+        </section>
+
+      </div>
+
+    </div>
+
+    <canvas id="confettiCanvas"></canvas>
+    <div id="fotoOverlay" role="dialog" aria-label="Fotografía AR" aria-modal="true">
+      <button id="fotoCerrar" type="button" aria-label="Cerrar fotografía">✕</button>
+      <img id="fotoPreview" alt="Captura AR">
+      <p id="fotoAyuda">Mantén presionada la imagen para guardarla en tu galería</p>
+      <div id="fotoBotones"><a id="fotoDescargar" download="batea-foto.png">Descargar</a></div>
+    </div>
   </div>
-  
-  <script>
-    let sceneEl = null;
-    const TOTAL_TARGETS = 3;
-
-    function openf() {
-      document.getElementById('extend').classList.add('show');
-      document.getElementById('scanStatus').innerText = 'Escaneando...';
-
-      sceneEl = document.createElement('a-scene');
-      sceneEl.setAttribute('mindar-image', 'imageTargetSrc: targets.mind; uiLoading: no; uiScanning: no; uiError: no; autoStart: true;');
-      sceneEl.setAttribute('color-space', 'sRGB');
-      sceneEl.setAttribute('renderer', 'colorManagement: true, physicallyCorrectLights');
-      sceneEl.setAttribute('vr-mode-ui', 'enabled: false');
-      sceneEl.setAttribute('device-orientation-permission-ui', 'enabled: false');
-      sceneEl.setAttribute('embedded', '');
-      sceneEl.id = 'mindarScene';
-
-      const camera = document.createElement('a-camera');
-      camera.setAttribute('position', '0 0 0');
-      camera.setAttribute('look-controls', 'enabled: false');
-      sceneEl.appendChild(camera);
-
-      for (let i = 0; i < TOTAL_TARGETS; i++) {
-        const target = document.createElement('a-entity');
-        target.setAttribute('mindar-image-target', `targetIndex: ${i}`);
-        target.id = `target${i}`;
-
-        target.addEventListener('targetFound', () => {
-          document.getElementById('scanStatus').innerText = `¡Imagen ${i + 1} detectada!`;
-
-          setTimeout(() => {
-            window.location.href = `AR.html?target=${i}`;
-          }, 500);
-        });
-
-        sceneEl.appendChild(target);
-      }
-
-      document.getElementById('arContainer').appendChild(sceneEl);
-
-      const interval = setInterval(() => {
-        const video = sceneEl.querySelector('video');
-        if (video) {
-          video.setAttribute('disablePictureInPicture', '');
-          video.setAttribute('controlsList', 'nofullscreen nodownload noremoteplayback');
-          video.style.pointerEvents = 'none';
-          clearInterval(interval);
-        }
-      }, 100);
-    }
-
-    function closef() {
-      document.getElementById('extend').classList.remove('show');
-
-      if (sceneEl) {
-        sceneEl.parentNode.removeChild(sceneEl);
-        sceneEl = null;
-      }
-    }
-  </script>
 </body>
 
 </html>

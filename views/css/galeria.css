@@ -14,9 +14,6 @@ body
    min-height: 100vh;
 }
 
-
-
-
 button#back {
  border-top-left-radius: 0;
    border-bottom-left-radius: 0;
@@ -33,8 +30,6 @@ button#back {
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
 }
 
-
-
 button#back:hover{
    
   background: #F8A5A2;
@@ -45,7 +40,6 @@ button#back:active
     background: #890200;
     color: #F8A5A2;
 }
-
 
 img#back {
     width: 40px;

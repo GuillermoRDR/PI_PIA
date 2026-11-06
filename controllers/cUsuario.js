@@ -91,9 +91,9 @@ function cerrarSesionUsuario(req, res) {
 
 async function obtenerPerfilUsuario(req, res) {
   try {
-    const usuarioId = req.session.usuarioId; 
-    
-    const usuario = await usuarioModel.obtenerPorId(usuarioId); 
+    const usuarioId = req.session.usuarioId;
+
+    const usuario = await usuarioModel.obtenerPorId(usuarioId);
 
     if (!usuario) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -105,4 +105,33 @@ async function obtenerPerfilUsuario(req, res) {
   }
 }
 
-module.exports = { registrarUsuario, inicioSesionUsuario, cerrarSesionUsuario, obtenerPerfilUsuario };
+
+async function consultarPuntuaciones(req, res) {
+  try {
+    const usuarioId = req.session.usuarioId;
+
+    const puntuaciones =
+      await usuarioModel.obtenerPuntuacionesMaximas(usuarioId);
+
+    if (!puntuaciones) {
+      return res.status(404).json({
+        error: 'Usuario no encontrado'
+      });
+    }
+
+    res.json(puntuaciones);
+
+  } catch (error) {
+    console.error(
+      'Error al obtener puntuaciones:',
+      error
+    );
+
+    res.status(500).json({
+      error: 'No se pudieron obtener las puntuaciones'
+    });
+  }
+}
+
+
+module.exports = { registrarUsuario, inicioSesionUsuario, cerrarSesionUsuario, obtenerPerfilUsuario, consultarPuntuaciones };

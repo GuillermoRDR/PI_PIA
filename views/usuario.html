@@ -4,49 +4,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perfil de Usuario</title>
 
-  <link href="css/usuario.css" rel="stylesheet">
+  <title>Mi perfil | Batea</title>
+
+  <link rel="stylesheet" href="/css/usuario.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
-  <script src="js/perfil.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script src="/js/perfil.js" defer></script>
 </head>
 
 <body>
-  <div id="head">
-    <button id="back" onclick="window.location.href='/principal'">
-      <img src="media/imagenes/back.png" alt="Volver">
+
+  <header id="head">
+    <button id="back" type="button" onclick="window.location.href='/principal'" aria-label="Volver al inicio">
+
+      <img src="/media/imagenes/back.png" alt="">
     </button>
-  </div>
+  </header>
 
-  <img id="fotoPerfil" src="media/imagenes/fedep.png" alt="Foto de Perfil">
+  <main class="perfil">
 
-  <div id="contenedorBio">
-    <br><br><br><br>
-    <h1 id="nombreUsuario">Cargando...</h1>
-    <label id="infoUsuario">Cargando datos...</label>
-
-    <div id="resto">
-      <h2>Biografía</h2>
-      <label id="textoBio">Cargando biografía...</label>
-      <br>
-      <h2>Puntuaciones Máximas:</h2>
-      <label> ¡BATEA!: 500 Puntos.</label>
-      <br>
-      <label> Trivia: 100 Puntos.</label>
-      <br>
-      <section class="perfil-favorita">
-        <h2>MI CARTA FAVORITA</h2>
-
-        <div id="perfil-carta-favorita">
-          <p>Cargando carta favorita...</p>
-        </div>
-      </section>
+    <div class="foto-contenedor">
+      <img id="fotoPerfil" src="/media/imagenes/fedep.png" alt="Foto de perfil">
     </div>
-  </div>
+
+    <section id="contenedorBio">
+
+      <div class="identidad">
+        <h1 id="nombreUsuario">Cargando...</h1>
+
+        <p id="infoUsuario">
+          Cargando datos...
+        </p>
+      </div>
+
+      <div id="resto" class="perfil-columnas">
+
+        <section class="panel-estadisticas">
+          <h2>PUNTUACIONES MÁXIMAS</h2>
+
+          <div class="estadistica">
+            <span class="estadistica-nombre">
+              TRIVIA
+            </span>
+
+            <strong id="maxTrivia" class="estadistica-valor">
+              —
+            </strong>
+
+            <span class="estadistica-descripcion">
+              Mejor intento · Máximo 50 puntos
+            </span>
+          </div>
+
+          <div class="estadistica">
+            <span class="estadistica-nombre">
+              ¡BATEA!
+            </span>
+
+            <strong id="maxJuego" class="estadistica-valor pendiente">
+              Próximamente
+            </strong>
+
+            <span class="estadistica-descripcion">
+              Récord del minijuego
+            </span>
+          </div>
+        </section>
+
+        <section class="perfil-favorita">
+          <h2>MI CARTA FAVORITA</h2>
+
+          <div id="perfil-carta-favorita" class="carta-contenedor">
+
+            <p>Cargando carta favorita...</p>
+
+          </div>
+
+          <a class="enlace-coleccion" href="/recompensas">
+            VER MI COLECCIÓN
+          </a>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
 </body>
 
 </html>

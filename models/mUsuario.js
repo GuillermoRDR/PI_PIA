@@ -23,4 +23,31 @@ async function obtenerPorId(idUsuario) {
   return result.rows[0];
 }
 
-module.exports = { obtenerPorEmail, crearUsuario, obtenerPorId };
+async function obtenerPuntuacionesMaximas(usuarioId) {
+  const resultado = await pool.query(`
+    SELECT
+      u.usuario_id,
+
+      COALESCE((
+        SELECT MAX(it.puntaje_obtenido)
+        FROM intento_trivia it
+        WHERE it.usuario_id = u.usuario_id
+          AND it.estado = 'completado'
+      ), 0)::INT AS max_trivia,
+
+      COALESCE((
+        SELECT MAX(pj.puntuacion)
+        FROM partida_juego pj
+        WHERE pj.usuario_id = u.usuario_id
+          AND pj.estado = 'completada'
+      ), 0)::INT AS max_juego
+
+    FROM usuario u
+    WHERE u.usuario_id = $1
+  `, [usuarioId]);
+
+  return resultado.rows[0] || null;
+}
+
+
+module.exports = { obtenerPorEmail, crearUsuario, obtenerPorId, obtenerPuntuacionesMaximas };
