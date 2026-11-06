@@ -4,9 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Visualizador AR - Batea</title>
 
   <link href="css/ar.css" rel="stylesheet">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
@@ -14,201 +16,151 @@
   <script src="https://kit.fontawesome.com/cb69cc3bd3.js" crossorigin="anonymous"></script>
 
   <script>
+    // Permitir capturar el canvas WebGL.
     (function () {
-      const originalGetContext = HTMLCanvasElement.prototype.getContext;
-      HTMLCanvasElement.prototype.getContext = function (type, attrs) {
-        if (type === 'webgl' || type === 'webgl2' || type === 'experimental-webgl') {
-          attrs = Object.assign({}, attrs, { preserveDrawingBuffer: true });
-        }
-        return originalGetContext.call(this, type, attrs);
-      };
+      const originalGetContext =
+        HTMLCanvasElement.prototype.getContext;
+
+      HTMLCanvasElement.prototype.getContext =
+        function (type, attrs) {
+          if (
+            type === 'webgl' ||
+            type === 'webgl2' ||
+            type === 'experimental-webgl'
+          ) {
+            attrs = Object.assign({}, attrs, {
+              preserveDrawingBuffer: true
+            });
+          }
+
+          return originalGetContext.call(this, type, attrs);
+        };
     })();
   </script>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  <script src="js/sceneAR.js" defer></script>
 
+  <script src="js/sceneAR.js" defer></script>
 </head>
 
 <body>
-  <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiLoading: no; uiScanning: no;"
+
+  <a-scene mindar-image="imageTargetSrc: /targets.mind; autoStart: false; uiLoading: no; uiScanning: no; uiError: no;"
     color-space="sRGB" embedded renderer="colorManagement: true;" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <a-light type="ambient" intensity="1.5"></a-light>
-    <a-light type="directional" position="1 2 3" intensity="1"></a-light>
+    <a-camera position="0 0 0" look-controls="enabled: false">
+    </a-camera>
 
-    <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
-      <a-entity id="modelo-3d" position="0 0 0" scale="2 2 2" rotation="0 0 0"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear; autoplay: false"></a-entity>
-    </a-entity>
+    <a-light type="ambient" intensity="1.5">
+    </a-light>
+
+    <a-light type="directional" position="1 2 3" intensity="1">
+    </a-light>
+    
+    <a-entity id="ar-target-container"></a-entity>
+
   </a-scene>
 
   <canvas id="confettiCanvas"></canvas>
 
+  <!-- Información del equipo -->
   <div id="extendfi">
-    <button id="hidefi" onclick="closefi()"><img src="media/imagenes/x.png" alt="X2" id="x2"></button>
+
+    <button id="hidefi" onclick="closefi()">
+      <img src="media/imagenes/x.png" alt="Cerrar" id="x2">
+    </button>
+
     <div id="his">
-      <h3>Los Angeles Dodgers</h3>
-      <img src="media/imagenes/LA.png" alt="estadisticas">
+
+      <h3 id="ar-equipo-nombre">
+        Cargando equipo...
+      </h3>
+
+      <img id="ar-equipo-logo" alt="Logo del equipo">
+
       <h4>Historia del equipo</h4>
-      <h5>Blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah.</h5>
-      <h4>Estadísticas del equipo</h4>
-      <img src="media/imagenes/est.png" alt="estadisticas">
-      <h4>Historia del Baseball</h4>
-      <h5>Blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah, blah.</h5>
+      <p id="ar-equipo-historia"></p>
+
+      <h4>Descripción</h4>
+      <p id="ar-equipo-descripcion"></p>
+
+      <h4>Ciudad</h4>
+      <p id="ar-equipo-ciudad"></p>
+
     </div>
   </div>
 
-  <!-- <img id="logo" src="media/imagenes/WOW.png" alt="bat"> -->
-  <button id="usu" onclick="openfi(this)">Estadísticas e historia</button>
-  <button id="back" onclick="window.location.href='principal.html'"> <img id="back"
-      src="media/imagenes/back.png"></button>
+  <!-- Navegación -->
+  <button id="usu" onclick="openfi()">
+    Estadísticas e historia
+  </button>
+
+  <button id="back" onclick="window.location.href='principal.html'">
+    <img id="back" src="media/imagenes/back.png" alt="Regresar">
+  </button>
+
   <br>
-  <button class="bottom" id="tri" onclick="window.location.href='trivias.html'">Trivia</button>
-  <button class="bottom" id="gal" onclick="window.location.href='galeria.html'">Galería</button>
-  <button class="bottomu" id="con" onclick="lanzarConfeti()">Confeti</button> <button class="bottomu"
-    id="mov">Moverse</button>
-  <button id="esc" onclick="tomarFoto()"><i class="fa-solid fa-camera" style="color: white;"></i></button>
-  <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
 
+  <button class="bottom" id="tri" onclick="window.location.href='trivias.html'">
+    Trivia
+  </button>
+
+  <button class="bottom" id="gal" onclick="window.location.href='galeria.html'">
+    Galería
+  </button>
+
+  <button class="bottomu" id="con" onclick="lanzarConfeti()">
+    Confeti
+  </button>
+
+  <button class="bottomu" id="mov" type="button">
+    Animar
+  </button>
+
+  <button id="esc" onclick="tomarFoto()">
+    <i class="fa-solid fa-camera" style="color: white;">
+    </i>
+  </button>
+
+  <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop>
+  </audio>
+
+  <!-- Panel de imagen ampliada -->
   <div id="extend">
-    <img id="extendf" src="media/imagenes/scan.png" alt="foto ampliada">
-    <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
-    <h2 onclick="window.location.href='AR.html'"> Escaneando...</h2>
+
+    <img id="extendf" src="media/imagenes/scan.png" alt="Foto ampliada">
+
+    <button id="hide" onclick="closef()">
+      <img src="media/imagenes/x.png" alt="Cerrar" id="x">
+    </button>
+
+    <h2>Escaneando...</h2>
   </div>
 
+  <!-- Captura de pantalla -->
   <div id="fotoOverlay">
-    <button id="fotoCerrar" onclick="cerrarFoto()">✕</button>
+
+    <button id="fotoCerrar" onclick="cerrarFoto()">
+      ✕
+    </button>
+
     <img id="fotoPreview" src="" alt="Captura de la pantalla AR">
-    <p id="fotoAyuda">Mantén presionada la imagen para guardarla en tu galería</p>
+
+    <p id="fotoAyuda">
+      Mantén presionada la imagen para guardarla en tu galería
+    </p>
+
     <div id="fotoBotones">
-      <a id="fotoDescargar" href="#" download="batea-foto.png">Descargar</a>
+      <a id="fotoDescargar" href="#" download="batea-foto.png">
+        Descargar
+      </a>
     </div>
+
   </div>
 
-  <script>
-
-    function openf(img) {
-      document.getElementById('extend').classList.add('show');
-    }
-
-    function closef() {
-      document.getElementById('extend').classList.remove('show');
-    }
-
-    function openfi(img) {
-      document.getElementById('extendfi').classList.add('showfi');
-    }
-
-    function closefi() {
-      document.getElementById('extendfi').classList.remove('showfi');
-    }
-
-    const confettiCanvasEl = document.getElementById('confettiCanvas');
-    const miConfeti = confetti.create(confettiCanvasEl, { resize: true, useWorker: false });
-
-    function lanzarConfeti() {
-      miConfeti({
-        particleCount: 150,
-        spread: 90,
-        origin: { y: 0.6 },
-        colors: ['#0339A6', '#FFB300', '#CA2407', '#FFFFFF']
-      });
-    }
-
-    function tomarFoto() {
-      const sceneEl = document.querySelector('a-scene');
-
-      if (!sceneEl) {
-        alert('La escena aún no está lista.');
-        return;
-      }
-
-      const arCanvas = sceneEl.canvas || (sceneEl.renderer && sceneEl.renderer.domElement);
-      const video = sceneEl.querySelector('video') || document.querySelector('video');
-
-      if (!arCanvas) {
-        alert('La escena aún se está cargando, intenta de nuevo en un momento.');
-        return;
-      }
-
-      const width = arCanvas.width;
-      const height = arCanvas.height;
-
-      const outCanvas = document.createElement('canvas');
-      outCanvas.width = width;
-      outCanvas.height = height;
-      const ctx = outCanvas.getContext('2d');
-
-      if (video && video.readyState >= 2 && video.videoWidth) {
-        const videoRatio = video.videoWidth / video.videoHeight;
-        const canvasRatio = width / height;
-        let drawWidth, drawHeight, offsetX, offsetY;
-
-        if (videoRatio > canvasRatio) {
-          drawHeight = height;
-          drawWidth = height * videoRatio;
-          offsetX = (width - drawWidth) / 2;
-          offsetY = 0;
-        } else {
-          drawWidth = width;
-          drawHeight = width / videoRatio;
-          offsetX = 0;
-          offsetY = (height - drawHeight) / 2;
-        }
-
-        const transform = window.getComputedStyle(video).transform;
-        const isMirrored = transform && transform !== 'none' &&
-          transform.startsWith('matrix') &&
-          parseFloat(transform.split('(')[1].split(',')[0]) < 0;
-
-        ctx.save();
-        if (isMirrored) {
-          ctx.translate(width, 0);
-          ctx.scale(-1, 1);
-          ctx.drawImage(video, width - offsetX - drawWidth, offsetY, drawWidth, drawHeight);
-        } else {
-          ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
-        }
-        ctx.restore();
-      }
-
-      try {
-        ctx.drawImage(arCanvas, 0, 0, width, height);
-      } catch (e) {
-        console.error('No se pudo dibujar el canvas AR (modelo):', e);
-        alert('No se pudo incluir el modelo en la foto: ' + e.message + '\n\nRevisa la consola (F12) para más detalle.');
-      }
-
-      if (confettiCanvasEl && confettiCanvasEl.width > 0 && confettiCanvasEl.height > 0) {
-        try {
-          ctx.drawImage(confettiCanvasEl, 0, 0, width, height);
-        } catch (e) {
-          console.error('No se pudo dibujar el canvas del confeti:', e);
-        }
-      }
-
-      try {
-        const dataURL = outCanvas.toDataURL('image/png');
-        document.getElementById('fotoPreview').src = dataURL;
-        document.getElementById('fotoDescargar').href = dataURL;
-        document.getElementById('fotoOverlay').classList.add('show');
-      } catch (e) {
-        console.error('Error al generar la foto:', e);
-        alert('No se pudo capturar la foto.');
-      }
-    }
-
-    function cerrarFoto() {
-      document.getElementById('fotoOverlay').classList.remove('show');
-      document.getElementById('fotoPreview').src = '';
-    }
-
-  </script>
 </body>
 
 </html>

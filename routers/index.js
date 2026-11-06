@@ -5,6 +5,7 @@ const usuariosRouter = require("./rUsuario");
 const protegerRuta = require('../controllers/middleware');
 const triviaRouter = require('./rTrivia');
 const recompensasRouter = require('./rRecompensas');
+const rAR = require('./rAR');
 
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'principal.html'));
@@ -22,6 +23,14 @@ router.get('/principal', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'principal.html'))
 });
 
+router.get('/galeria', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'views', 'galeria.html'));
+});
+
+router.get('/trivia', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'views', 'trivia.html'));
+});
+
 router.get('/perfil', protegerRuta.protegerRuta, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'usuario.html'))
 });
@@ -30,16 +39,13 @@ router.get('/configuracion', protegerRuta.protegerRuta, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'configuracion.html'))
 });
 
-router.get('/trivia', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'views', 'trivia.html'));
-});
-
 router.get('/recompensas', protegerRuta.protegerRuta, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'recompensas.html'));
 });
 
-router.use("/api/usuario", usuariosRouter);
+router.use('/api/usuario', usuariosRouter);
 router.use('/api/trivia', triviaRouter);
 router.use('/api/recompensas', recompensasRouter);
+router.use('/api/ar', rAR);
 
 module.exports = router;  

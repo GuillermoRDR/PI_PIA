@@ -267,8 +267,8 @@ function mostrarRarezaDetalle(carta) {
 
 function actualizarBotonFavorita(carta) {
   $('boton-favorita').textContent = carta.favorita
-    ? '♥ QUITAR DE FAVORITAS'
-    : '♡ AGREGAR A FAVORITAS';
+    ? 'QUITAR DE FAVORITAS'
+    : 'AGREGAR A FAVORITAS';
 
   $('boton-favorita').classList.toggle(
     'activa',

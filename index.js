@@ -11,6 +11,9 @@ const pgSession = require('connect-pg-simple')(session);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.get('/targets.mind', (req, res) => {
+    res.sendFile(path.join(__dirname, 'targets.mind'));
+});
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(session({
   store: new pgSession({

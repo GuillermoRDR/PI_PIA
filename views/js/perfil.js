@@ -1,131 +1,170 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const foto = document.getElementById('fotoPerfil');
-  const nombre = document.getElementById('nombreUsuario');
-  const info = document.getElementById('infoUsuario');
-  const bio = document.getElementById('textoBio');
 
-  actualizarPerfil(foto, nombre, info, bio);
+document.addEventListener('DOMContentLoaded', () => {
+  inicializarPerfil();
 });
 
-async function actualizarPerfil(foto, nombre, info, bio) {
+async function inicializarPerfil() {
   try {
-    const respuesta = await fetch('/api/usuario/perfil', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    // Primero comprobamos que la sesión sea válida.
+    await cargarDatosUsuario();
 
-    const usuario = await respuesta.json();
-
-    if (respuesta.status === 404 || respuesta.status === 401) {
-      return Swal.fire({
-        icon: 'error',
-        title: 'Error de autenticación',
-        text: usuario.error || 'Por favor, inicia sesión para ver tu perfil.'
-      }).then(() => {
-        window.location.href = '/inicioSesion';
-      });
-    }
-
-    if (!respuesta.ok) {
-      throw new Error(usuario.error || 'Error al obtener datos');
-    }
-
-    if (usuario.foto_perfil_url) {
-      foto.src = usuario.foto_perfil_url;
-    }
-
-    nombre.textContent = usuario.nombre || 'Usuario sin nombre';
-
-    if (usuario.creado_en) {
-      const fecha = new Date(usuario.creado_en);
-      const anio = fecha.getFullYear();
-      info.textContent = `Se unió en ${anio}.`;
-    } else {
-      info.textContent = 'Miembro de la plataforma';
-    }
-
-    bio.textContent = usuario.biografia || 'Sin biografía disponible.';
-
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true
-    });
-
-    Toast.fire({
-      icon: 'success',
-      title: 'Perfil cargado correctamente'
-    });
+    // Las otras secciones son independientes.
+    await Promise.allSettled([
+      cargarPuntuaciones(),
+      cargarCartaFavorita()
+    ]);
 
   } catch (error) {
     console.error('Error al cargar perfil:', error);
+
+    if (error.status === 401 || error.status === 404) {
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error de autenticación',
+        text: 'Por favor, inicia sesión para ver tu perfil.'
+      });
+
+      window.location.href = '/inicioSesion';
+      return;
+    }
+
     Swal.fire({
       icon: 'error',
-      title: 'Sin conexión',
-      text: 'No se pudo conectar con el servidor.'
+      title: 'Error',
+      text: 'No se pudo cargar la información del perfil.'
     });
   }
 }
 
+async function obtenerJSON(url) {
+  const respuesta = await fetch(url, {
+    method: 'GET',
+    credentials: 'same-origin',
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
 
-async function cargarCartaFavorita() {
-  const contenedor = document.getElementById(
-    'perfil-carta-favorita'
-  );
-
-  if (!contenedor) return;
-
-  try {
-    const respuesta = await fetch(
-      '/api/recompensas/favorita',
-      { credentials: 'same-origin' }
+  if (!respuesta.ok) {
+    const error = new Error(
+      `Error al consultar ${url}`
     );
 
-    if (!respuesta.ok) {
-      throw new Error('Error al cargar la favorita');
+    error.status = respuesta.status;
+    throw error;
+  }
+
+  return respuesta.json();
+}
+
+async function cargarDatosUsuario() {
+  const usuario = await obtenerJSON(
+    '/api/usuario/perfil'
+  );
+
+  const foto = document.getElementById('fotoPerfil');
+  const nombre = document.getElementById('nombreUsuario');
+  const info = document.getElementById('infoUsuario');
+
+  if (usuario.foto_perfil_url) {
+    foto.src = usuario.foto_perfil_url;
+  }
+
+  nombre.textContent =
+    usuario.nombre || 'Usuario sin nombre';
+
+  if (usuario.creado_en) {
+    const fecha = new Date(usuario.creado_en);
+
+    info.textContent =
+      `Se unió en ${fecha.getFullYear()}.`;
+  } else {
+    info.textContent = 'Miembro de la plataforma';
+  }
+}
+
+async function cargarPuntuaciones() {
+  const trivia = document.getElementById('maxTrivia');
+  const juego = document.getElementById('maxJuego');
+
+  try {
+    const datos = await obtenerJSON('/api/usuario/puntuaciones');
+
+    trivia.textContent = datos.max_trivia ?? 0;
+
+    const JUEGO_DISPONIBLE = false;
+
+    if (JUEGO_DISPONIBLE) {
+      juego.textContent = datos.max_juego ?? 0;
+      juego.classList.remove('pendiente');
+    } else {
+      juego.textContent = 'Próximamente';
+      juego.classList.add('pendiente');
     }
 
-    const { carta } = await respuesta.json();
+  } catch (error) {
+    console.error('Error al cargar puntuaciones:', error);
+
+    trivia.textContent = '—';
+    juego.textContent = 'Próximamente';
+  }
+}
+
+async function cargarCartaFavorita() {
+  const contenedor = document.getElementById('perfil-carta-favorita');
+
+  try {
+    const { carta } = await obtenerJSON( '/api/recompensas/favorita');
 
     contenedor.replaceChildren();
 
     if (!carta) {
       const mensaje = document.createElement('p');
 
-      mensaje.textContent =
-        'Todavía no has seleccionado una carta favorita.';
-
+      mensaje.className = 'carta-vacia';
+      mensaje.textContent = 'Todavía no has seleccionado una carta favorita. ' + 'Puedes elegirla desde tu colección.' 
       contenedor.appendChild(mensaje);
       return;
     }
 
-    const imagen = document.createElement('img');
-    imagen.alt = carta.titulo;
-
     if (carta.imagen_url) {
+      const imagen = document.createElement('img');
+
+      imagen.className = 'carta-favorita-imagen';
       imagen.src = carta.imagen_url;
-    } else {
-      imagen.hidden = true;
+      imagen.alt = `Carta de ${carta.titulo}`;
+
+      contenedor.appendChild(imagen);
     }
 
     const titulo = document.createElement('h3');
+
+    titulo.className = 'carta-favorita-titulo';
     titulo.textContent = carta.titulo;
 
-    const estrellas = document.createElement('p');
-    estrellas.textContent =
-      '★'.repeat(carta.rareza) +
-      '☆'.repeat(5 - carta.rareza);
+    contenedor.appendChild(titulo);
 
-    contenedor.append(imagen, titulo, estrellas);
+    const equipo = document.createElement('p');
+
+    equipo.className = 'carta-favorita-equipo';
+    equipo.textContent = carta.equipo || '';
+
+    contenedor.appendChild(equipo);
+
+    const rareza = Math.max( 1, Math.min(5, Number(carta.rareza) || 1));
+
+    const estrellas = document.createElement('p');
+
+    estrellas.className = 'carta-favorita-estrellas';
+    estrellas.textContent = '★'.repeat(rareza) + '☆'.repeat(5 - rareza);
+
+    estrellas.setAttribute( 'aria-label', `${rareza} de 5 estrellas`);
+
+    contenedor.appendChild(estrellas);
 
   } catch (error) {
-    contenedor.textContent =
-      'No se pudo cargar la carta favorita.';
+    console.error( 'Error al cargar carta favorita:', error);
+
+    contenedor.textContent = 'No se pudo cargar la carta favorita.';
   }
 }
-
-cargarCartaFavorita();

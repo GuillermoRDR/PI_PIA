@@ -1,163 +1,367 @@
-html {
+:root {
+    --azul: #1e2e86;
+    --azul-oscuro: #141e59;
+    --amarillo: #ffb300;
+    --marron: #9f5d09;
+    --rojo: #ca2407;
+    --fuente-titulos: 'Alfa Slab One', cursive;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
     margin: 0;
     padding: 0;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(180deg, #889fdc, #0339a6, #1e2e86, #141e59);
     min-height: 100vh;
+    min-height: 100dvh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: linear-gradient(180deg,
+            #889fdc,
+            #0339a6,
+            #1e2e86,
+            #141e59);
+
+    background-attachment: fixed;
 }
 
-div#head {
-    background: linear-gradient(180deg, #f9d55c, #ffb300, #d97904, #9f5d09);
-    margin: 0;
-    min-height: 20vh;
-    background-repeat: no-repeat;
+#head {
+    height: clamp(80px, 2vh, 100px);
+
+    background: linear-gradient(180deg,
+            #f9d55c,
+            #ffb300,
+            #d97904,
+            #9f5d09);
+
     position: relative;
 }
 
-button#back {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    margin-right: auto;
+#back {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 20;
+
     width: 70px;
     height: 67px;
-    color: #4b2c04;
-    background: linear-gradient(180deg, #f8a5a2, #ca2407, #ae120a, #890200);
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+
+    border: 2px solid black;
+    border-radius: 0 20px 20px 0;
+
+    background: linear-gradient(180deg,
+            #f8a5a2,
+            #ca2407,
+            #ae120a,
+            #890200);
+
     cursor: pointer;
-    border-color: black;
-    font-family: 'Alfa Slab One', cursive;
-    z-index: 20;
 }
 
-button#back:hover {
+#back:hover {
     background: #f8a5a2;
 }
 
-button#back:active {
+#back:active {
     background: #890200;
-    color: #f8a5a2;
 }
 
-button#back img {
+#back img {
     width: 40px;
     height: 40px;
-    position: absolute;
-    left: 10px;
-    top: 10px;
+    object-fit: contain;
 }
 
-img#fotoPerfil {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    position: absolute;
-    top: 20vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    border: 2px solid black;
-    object-fit: cover;
-    background-color: #fff;
-}
-
-div#contenedorBio {
-    background-color: white;
+.perfil {
     width: 90%;
-    max-width: 90%;
-    border: 4px solid black;
-    border-radius: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
     margin: 0 auto;
-    margin-top: -30px;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    max-height: 70vh;
-    overflow-y: auto;
+    padding-bottom: 30px;
+    position: relative;
 }
 
-div#contenedorBio::-webkit-scrollbar {
-    width: 8px;
+.foto-contenedor {
+    position: relative;
+    z-index: 10;
+
+    width: 150px;
+    height: 150px;
+
+    margin: -75px auto -75px;
 }
 
-div#contenedorBio::-webkit-scrollbar-track {
-    background: transparent;
-    margin: 20px 0;
+#fotoPerfil {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+    border: 3px solid black;
+
+    object-fit: cover;
+    background: white;
 }
 
-div#contenedorBio::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 10px;
-}
-
-h1#nombreUsuario {
-    font-family: 'Alfa Slab One', cursive;
-    text-align: center;
+#contenedorBio {
+    width: 100%;
     margin: 0;
-    margin-top: 20px;
-    color: #333;
+
+    padding: 70px 32px 32px;
+    padding-bottom: 20px; 
+
+    background: white;
+    border: 4px solid black;
+    border-radius: 36px;
+
+    max-height: none;
+    overflow: visible;
 }
 
-label#infoUsuario {
+.identidad {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+#nombreUsuario {
+    margin: 0;
+
+    font-family: var(--fuente-titulos);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+
+    color: #333;
+    overflow-wrap: anywhere;
+}
+
+#infoUsuario {
+    margin: 8px 0 0;
+    font-size: .95rem;
     font-weight: bold;
     color: #666;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    display: block;
 }
 
-div#resto {
-    width: 100%;
-    text-align: left;
-    margin-top: 15px;
+.perfil-columnas {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 28px;
+    align-items: stretch;
 }
 
-div#resto h2 {
-    font-family: 'Alfa Slab One', cursive;
-    font-size: 1.1rem;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    color: #1e2e86;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 3px;
+.panel-estadisticas,
+.perfil-favorita {
+    min-width: 0;
+    padding: 22px;
+
+    border: 2px solid #d8dce9;
+    border-radius: 20px;
+
+    background: #f8f9ff;
 }
 
-div#resto label {
-    display: block;
-    margin-bottom: 5px;
-    color: #444;
-    line-height: 1.4;
+.panel-estadisticas h2,
+.perfil-favorita h2 {
+    margin: 0 0 22px;
+    padding-bottom: 12px;
+
+    border-bottom: 2px solid #d8dce9;
+
+    font-family: var(--fuente-titulos);
+    font-size: clamp(.9rem, 1.5vw, 1.1rem);
+    color: var(--azul);
+}
+
+.panel-estadisticas {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.estadistica {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+
+    flex: 1;
+    min-height: 130px;
+
+    padding: 20px;
+
+    border: 2px solid #d8dce9;
+    border-radius: 16px;
+
+    background: white;
+}
+
+.estadistica-nombre {
+    font-family: var(--fuente-titulos);
+    color: var(--azul);
+    font-size: .9rem;
+}
+
+.estadistica-valor {
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.2;
+    color: var(--azul);
+}
+
+.estadistica-valor.pendiente {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    color: #777;
+}
+
+.estadistica-descripcion {
+    color: #666;
+    font-size: .85rem;
+    line-height: 1.5;
 }
 
 .perfil-favorita {
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
-#perfil-carta-favorita img {
-  width: min(100%, 220px);
-  aspect-ratio: 3 / 4;
-  object-fit: contain;
-  border-radius: 12px;
+.carta-contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    flex: 1;
+    min-height: 330px;
+
+    padding: 15px;
+
+    border: 2px solid #d8dce9;
+    border-radius: 16px;
+
+    background: white;
 }
 
-#perfil-carta-favorita h3 {
-  font-family: 'Alfa Slab One', cursive;
+.carta-favorita-imagen {
+    display: block;
+
+    width: auto;
+    max-width: 100%;
+    height: clamp(220px, 34vh, 360px);
+
+    aspect-ratio: 3 / 4;
+    object-fit: contain;
+
+    border-radius: 12px;
 }
 
-#perfil-carta-favorita p {
-  color: #9F5D09;
+.carta-favorita-titulo {
+    margin: 4px 0 0;
+
+    font-family: var(--fuente-titulos);
+    font-size: clamp(.95rem, 1.6vw, 1.2rem);
+
+    color: var(--azul);
+    overflow-wrap: anywhere;
+}
+
+.carta-favorita-equipo {
+    margin: 0;
+    color: #666;
+    font-size: .85rem;
+}
+
+.carta-favorita-estrellas {
+    margin: 0;
+
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    color: #d97904;
+}
+
+.carta-vacia {
+    max-width: 290px;
+    color: #777;
+    line-height: 1.6;
+}
+
+.enlace-coleccion {
+    display: inline-block;
+    align-self: center;
+
+    margin-top: 18px;
+    padding: 12px 20px;
+
+    border: 2px solid black;
+    border-radius: 12px;
+
+    background: linear-gradient(180deg,
+            #f9d55c,
+            #ffb300,
+            #d97904);
+
+    color: #ca2407;
+    font-family: var(--fuente-titulos);
+    font-size: .8rem;
+
+    text-decoration: none;
+    text-shadow: -1px 1px white;
+}
+
+.enlace-coleccion:hover {
+    background: #f9d55c;
+}
+
+@media (max-width: 760px) {
+    .perfil {
+        width: min(94%, 560px);
+    }
+
+    #contenedorBio {
+        padding: 70px 18px 22px;
+        border-radius: 25px;
+    }
+
+    .perfil-columnas {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .panel-estadisticas,
+    .perfil-favorita {
+        padding: 18px;
+    }
+
+    .estadistica {
+        min-height: 105px;
+    }
+
+    .carta-contenedor {
+        min-height: 280px;
+    }
+
+    .carta-favorita-imagen {
+        height: min(45vh, 340px);
+    }
+}
+
+@media (max-width: 420px) {
+    .foto-contenedor {
+        width: 125px;
+        height: 125px;
+        margin: -62px auto -62px;
+    }
+
+    #contenedorBio {
+        padding-top: 70px;
+    }
+
+    .panel-estadisticas h2,
+    .perfil-favorita h2 {
+        font-size: .9rem;
+    }
 }
