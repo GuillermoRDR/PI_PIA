@@ -6,17 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galería de videos</title>
 
-  <link href="css/videos.css" rel="stylesheet">
+  <link href="css/videos.css?v=2" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <button id="back" onclick="window.location.href='galeria.html'"> 
+  <button id="back" onclick="window.location.href='galeria.html'">
     <img id="back" src="media/imagenes/back.png">
   </button>
-  
+
   <div class="efecto">
     <h1 class="trivia">Videos</h1>
   </div>
@@ -31,20 +31,44 @@
 
   <div id="extend">
     <video id="extendf" controls></video>
+    <canvas id="extendc"></canvas>
+    <div id="ctrl">
+      <button id="pp" type="button" aria-label="Reproducir o pausar">▶</button>
+      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Progreso">
+      <span id="tiempo">0:00</span>
+    </div>
     <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
     <button id="filtros" onclick="openfi(this)">Filtros</button>
   </div>
 
   <div id="extendfi">
     <button id="hidefi" onclick="closefi()"><img src="media/imagenes/x.png" alt="X2" id="x2"></button>
-    <button id="des">Desenfoque</button>
-    <button id="pix">Pixelado</button>
-    <button id="col">Colores pastel</button>
-    <button id="ret">Retro digital</button>
+    <button id="nof" class="filtro" data-f="">Sin filtro</button>
+    <button id="des" class="filtro" data-f="des">Desenfoque</button>
+    <button id="pix" class="filtro" data-f="pix">Pixelado</button>
+    <button id="col" class="filtro" data-f="col">Colores pastel</button>
+    <button id="ret" class="filtro" data-f="ret">Retro digital</button>
   </div>
 
   <script>
+    const video = document.getElementById('extendf');
+    const lienzo = document.getElementById('extendc');
+    const cx = lienzo.getContext('2d');
+    const chico = document.createElement('canvas');
+    const cc = chico.getContext('2d', { willReadFrequently: true });
+    const ctrl = document.getElementById('ctrl');
+    const pp = document.getElementById('pp');
+    const seek = document.getElementById('seek');
+    const tiempo = document.getElementById('tiempo');
+
+    const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+    const GAMEBOY = [[15, 56, 15], [48, 98, 48], [139, 172, 15], [155, 188, 15]];
+
+    let filtro = null;
+    let raf = 0;
+
     function openf(img) {
+      aplicarFiltro(null);
       document.getElementById('extendf').src = img.dataset.video;
       document.getElementById('extend').classList.add('show');
     }
@@ -54,14 +78,184 @@
     }
 
     function closef() {
-      const video = document.getElementById('extendf');
       video.pause();
+      aplicarFiltro(null);
       document.getElementById('extend').classList.remove('show');
     }
 
     function closefi() {
       document.getElementById('extendfi').classList.remove('showfi');
     }
+
+    function ajustar() {
+      const w = video.offsetWidth;
+      const h = video.offsetHeight;
+      if (!w || !h) return;
+
+      if (lienzo.width !== w || lienzo.height !== h) {
+        lienzo.width = w;
+        lienzo.height = h;
+      }
+
+      lienzo.style.left = video.offsetLeft + 'px';
+      lienzo.style.top = video.offsetTop + 'px';
+      lienzo.style.width = w + 'px';
+      lienzo.style.height = h + 'px';
+
+      ctrl.style.left = video.offsetLeft + 'px';
+      ctrl.style.width = w + 'px';
+      ctrl.style.top = (video.offsetTop + h - ctrl.offsetHeight) + 'px';
+    }
+
+    function aplicarFiltro(f) {
+      filtro = f;
+      cancelAnimationFrame(raf);
+
+      const activo = !!f;
+      lienzo.classList.toggle('activo', activo);
+      ctrl.classList.toggle('activo', activo);
+      video.style.visibility = activo ? 'hidden' : 'visible';
+
+      document.querySelectorAll('#extendfi .filtro').forEach(function (b) {
+        b.classList.toggle('sel', b.dataset.f === (f || ''));
+      });
+
+      if (activo) {
+        ajustar();
+        dibujar();
+      }
+    }
+
+    function dibujar() {
+      if (!filtro) return;
+
+      const vw = video.videoWidth;
+      const vh = video.videoHeight;
+
+      if (video.readyState >= 2 && vw && vh) {
+        const W = lienzo.width;
+        const H = lienzo.height;
+        const k = Math.min(W / vw, H / vh);
+        const dw = vw * k;
+        const dh = vh * k;
+        const dx = (W - dw) / 2;
+        const dy = (H - dh) / 2;
+
+        cx.globalCompositeOperation = 'source-over';
+        cx.imageSmoothingEnabled = true;
+        cx.fillStyle = '#000';
+        cx.fillRect(0, 0, W, H);
+
+        if (filtro === 'des') {
+          cx.save();
+          cx.beginPath();
+          cx.rect(dx, dy, dw, dh);
+          cx.clip();
+          if ('filter' in cx) {
+            const m = 28;
+            cx.filter = 'blur(16px)';
+            cx.drawImage(video, dx - m, dy - m, dw + 2 * m, dh + 2 * m);
+          } else {
+            const w = Math.max(8, Math.round(dw / 24));
+            const h = Math.max(8, Math.round(dh / 24));
+            chico.width = w;
+            chico.height = h;
+            cc.drawImage(video, 0, 0, w, h);
+            cx.drawImage(chico, dx, dy, dw, dh);
+          }
+          cx.restore();
+        }
+
+        if (filtro === 'pix') {
+          const cols = 44;
+          const rows = Math.max(1, Math.round(cols * vh / vw));
+          chico.width = cols;
+          chico.height = rows;
+          cc.drawImage(video, 0, 0, cols, rows);
+          cx.imageSmoothingEnabled = false;
+          cx.drawImage(chico, dx, dy, dw, dh);
+        }
+
+        if (filtro === 'col') {
+          cx.drawImage(video, dx, dy, dw, dh);
+          cx.globalCompositeOperation = 'saturation';
+          cx.fillStyle = 'hsl(0, 20%, 50%)';
+          cx.fillRect(dx, dy, dw, dh);
+          cx.globalCompositeOperation = 'screen';
+          cx.fillStyle = 'rgba(255, 205, 230, 0.45)';
+          cx.fillRect(dx, dy, dw, dh);
+          cx.globalCompositeOperation = 'source-over';
+        }
+
+        if (filtro === 'ret') {
+          const cols = 160;
+          const rows = Math.max(1, Math.round(cols * vh / vw));
+          chico.width = cols;
+          chico.height = rows;
+          cc.drawImage(video, 0, 0, cols, rows);
+
+          const img = cc.getImageData(0, 0, cols, rows);
+          const d = img.data;
+
+          for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+              const i = (y * cols + x) * 4;
+              let g = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+              g = (g - 128) * 1.25 + 128 + (BAYER[(y & 3) * 4 + (x & 3)] / 16 - 0.5) * 70;
+              const c = GAMEBOY[Math.max(0, Math.min(3, Math.floor(g / 64)))];
+              d[i] = c[0];
+              d[i + 1] = c[1];
+              d[i + 2] = c[2];
+              d[i + 3] = 255;
+            }
+          }
+
+          cc.putImageData(img, 0, 0);
+          cx.imageSmoothingEnabled = false;
+          cx.drawImage(chico, dx, dy, dw, dh);
+        }
+      }
+
+      raf = requestAnimationFrame(dibujar);
+    }
+
+    function formato(s) {
+      if (!isFinite(s)) return '0:00';
+      const m = Math.floor(s / 60);
+      const r = Math.floor(s % 60);
+      return m + ':' + (r < 10 ? '0' : '') + r;
+    }
+
+    document.querySelectorAll('#extendfi .filtro').forEach(function (b) {
+      b.addEventListener('click', function () {
+        aplicarFiltro(b.dataset.f || null);
+        closefi();
+      });
+    });
+
+    function alternar() {
+      if (video.paused) video.play();
+      else video.pause();
+    }
+
+    pp.addEventListener('click', alternar);
+    lienzo.addEventListener('click', alternar);
+
+    video.addEventListener('play', function () { pp.textContent = '❚❚'; });
+    video.addEventListener('pause', function () { pp.textContent = '▶'; });
+
+    video.addEventListener('timeupdate', function () {
+      if (video.duration) seek.value = (video.currentTime / video.duration) * 1000;
+      tiempo.textContent = formato(video.currentTime) + ' / ' + formato(video.duration);
+    });
+
+    seek.addEventListener('input', function () {
+      if (video.duration) video.currentTime = (seek.value / 1000) * video.duration;
+    });
+
+    video.addEventListener('loadedmetadata', ajustar);
+    window.addEventListener('resize', ajustar);
+    if (window.ResizeObserver) new ResizeObserver(ajustar).observe(video);
   </script>
 </body>
 
