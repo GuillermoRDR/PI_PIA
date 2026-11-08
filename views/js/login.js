@@ -20,41 +20,47 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      try {
-        const respuesta = await fetch('/api/usuario/inicioSesion', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ correo, contra })
-        });
-        const datos = await respuesta.json();
 
-        if (respuesta.status === 200) {
-          Toast.fire({
-            icon: 'success',
-            title: '¡Inicio de sesion exitoso!',
-          }).then(() => {
-            window.location.href = '/principal';
-          });
-        } else if (respuesta.status === 401) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Credenciales invalidas',
-            text: datos.error || 'Correo o contraseña incorrectos.'
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error de Servidor',
-            text: datos.error || 'Ocurrio un problema en el servidor. Inténtalo más tarde.'
-          });
-        }
-      } catch (errorRed) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Sin conexión',
-          text: 'No se pudo conectar con el servidor.'
+      const boton = form.querySelector('[type="submit"]');
+
+      if (boton) boton.disabled = true;
+
+      try {
+        const datos = await Alertas.peticion(
+          '/api/usuario/inicioSesion',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ correo, contra })
+          }
+        );
+
+        await Swal.fire({
+          icon: 'success',
+          title: '¡Bienvenido a Batea!',
+          text: datos.mensaje || 'Inicio de sesión exitoso.',
+          timer: 1500,
+          showConfirmButton: false
         });
+
+        window.location.href = '/principal';
+
+      } catch (error) {
+        if (error.status === 401) {
+          await Alertas.mostrar(
+            'warning',
+            'Credenciales incorrectas',
+            'Verifica tu correo electrónico y contraseña.'
+          );
+        } else {
+          await Alertas.error(error);
+        }
+      } finally {
+        if (boton) boton.disabled = false;
       }
+
     });
   }
 }); 

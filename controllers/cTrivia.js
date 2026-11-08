@@ -1,12 +1,33 @@
 
 const trivia = require('../models/mTrivia');
 
+
 function manejarError(res, error) {
-  console.error('Error de trivia:', error);
-  return res.status(400).json({
-    error: error.message
+  const erroresEsperados = {
+    'No existe una trivia activa': 503,
+    'No hay suficientes preguntas válidas': 503,
+    'Intento no disponible': 404,
+    'Intento no válido': 400,
+    'Intento ya finalizado o no válido': 409,
+    'Pregunta u opción inválida': 400,
+    'Debes responder las cinco preguntas': 400
+  };
+
+  const status = erroresEsperados[error.message];
+
+  if (status) {
+    return res.status(status).json({
+      error: error.message
+    });
+  }
+
+  console.error('Error interno de trivia:', error);
+
+  return res.status(500).json({
+    error: 'Ocurrió un error interno en la trivia.'
   });
 }
+
 
 async function iniciar(req, res) {
   try {

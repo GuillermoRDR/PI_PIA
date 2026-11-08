@@ -8,7 +8,7 @@ const recompensasRouter = require('./rRecompensas');
 const rAR = require('./rAR');
 
 router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'views', 'principal.html'));
+  res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
 });
 
 router.get('/registro', (req, res) => {
@@ -35,11 +35,11 @@ router.get('/perfil', protegerRuta.protegerRuta, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'usuario.html'))
 });
 
-router.get('/configuracion', protegerRuta.protegerRuta, (req, res) => {
+router.get('/configuracion', protegerRuta.protegerPagina, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'configuracion.html'))
 });
 
-router.get('/recompensas', protegerRuta.protegerRuta, (req, res) => {
+router.get('/recompensas', protegerRuta.protegerPagina, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'recompensas.html'));
 });
 
