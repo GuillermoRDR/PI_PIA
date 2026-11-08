@@ -9,6 +9,21 @@ let iniciando = false;
 const $ = (id) => document.getElementById(id);
 
 
+function elegirModeloAleatorio(equipo) {
+  const modelos = Array.isArray(equipo.modelos)
+    ? equipo.modelos.filter(m => m.archivo_url)
+    : [];
+
+  if (!modelos.length) {
+    return equipo.modelo_url || null;
+  }
+
+  const indice = Math.floor(Math.random() * modelos.length);
+
+  return modelos[indice].archivo_url;
+}
+
+
 AFRAME.registerComponent('batea-animacion', {
   tick: function (_tiempo, delta) {
     const anim = this.el.__animacion;
@@ -130,7 +145,7 @@ async function abrirEscaner() {
       modelo.setAttribute('scale', '1 1 1');
       modelo.setAttribute('batea-animacion', '');
       target.appendChild(modelo);
-      const entrada = { equipo, indice, target, modelo, cargando: false, cargado: false, animacion: null };
+      const entrada = { equipo, indice, target, modelo, modeloUrl: null, cargando: false, cargado: false, animacion: null };
       registro.set(indice, entrada);
       target.addEventListener('targetFound', () => {
         if (token === sesion && escaneoActivo) seleccionarEquipo(entrada);
@@ -146,9 +161,18 @@ async function abrirEscaner() {
     nuevaEscena.addEventListener('arReady', () => {
       if (token === sesion && !equipoActivo) actualizarEstado('Escanea el logo de un equipo');
     });
-    nuevaEscena.addEventListener('arError', (e) => {
-      if (token === sesion) actualizarEstado('Error al iniciar la cámara');
-      console.error('MindAR arError', e.detail);
+    nuevaEscena.addEventListener('arError', async (e) => {
+      console.error('MindAR arError:', e.detail);
+
+      if (token !== sesion) return;
+
+      actualizarEstado('Error al iniciar la cámara');
+
+      await Alertas.mostrar(
+        'error',
+        'Cámara no disponible',
+        'Comprueba los permisos de cámara, que ninguna otra aplicación la esté utilizando y que estés usando HTTPS o localhost.'
+      );
     });
 
     escena = nuevaEscena;
@@ -158,15 +182,36 @@ async function abrirEscaner() {
     escaneoActivo = true;
     await nuevaEscena.systems['mindar-image-system'].start();
     console.log('Batea: MindAR activo con', registro.size, 'marcadores');
+
   } catch (error) {
     console.error('Error al abrir el escáner:', error);
-    actualizarEstado(error.message || 'No se pudo iniciar el escáner');
+
+    actualizarEstado('No se pudo iniciar el escáner');
+
     escaneoActivo = false;
+
     if (escena) {
-      try { await escena.systems?.['mindar-image-system']?.stop(); } catch (_) { }
-      escena.remove(); escena = null;
+      try {
+        await escena.systems?.['mindar-image-system']?.stop();
+      } catch (errorDetencion) {
+        console.warn('Error al detener MindAR:', errorDetencion);
+      }
+
+      escena.remove();
+      escena = null;
     }
-  } finally {
+
+    if (token === sesion) {
+      await Alertas.mostrar(
+        'error',
+        'Error del escáner',
+        error.name === 'NotAllowedError'
+          ? 'Debes permitir el acceso a la cámara.'
+          : error.message || 'No se pudo iniciar la realidad aumentada.'
+      );
+    }
+  }
+  finally {
     iniciando = false;
   }
 }
@@ -207,13 +252,19 @@ function seleccionarEquipo(entrada) {
   actualizarEstado(entrada.equipo.nombre);
   actualizarBotonAnimacion();
 
+
+  if (!entrada.modeloUrl) {
+    entrada.modeloUrl = elegirModeloAleatorio(entrada.equipo);
+  }
+
   if (!entrada.cargado && !entrada.cargando) {
     cargarModelo(entrada);
   }
+
 }
 
 function cargarModelo(entrada) {
-  const url = entrada.equipo.modelo_url;
+  const url = entrada.modeloUrl;
   if (!url) {
     console.warn('Equipo sin modelo:', entrada.equipo.nombre);
     actualizarEstado(`${entrada.equipo.nombre}: sin modelo 3D`);
@@ -243,10 +294,20 @@ function cargarModelo(entrada) {
       actualizarBotonAnimacion();
     }
   }, { once: true });
-  entrada.modelo.addEventListener('model-error', (e) => {
+  entrada.modelo.addEventListener('model-error', async (e) => {
     entrada.cargando = false;
+
     console.error('Error GLB:', url, e.detail);
-    if (equipoActivo === entrada) actualizarEstado('No se pudo cargar el jugador');
+
+    if (equipoActivo === entrada) {
+      actualizarEstado('No se pudo cargar el modelo 3D');
+
+      await Alertas.mostrar(
+        'error',
+        'Modelo no disponible',
+        `No se pudo cargar el modelo de ${entrada.equipo.nombre}. Comprueba que el archivo GLB exista y que su ruta sea correcta.`
+      );
+    }
   }, { once: true });
   entrada.modelo.setAttribute('gltf-model', url);
 }
@@ -374,11 +435,25 @@ function lanzarConfeti() {
 }
 
 function tomarFoto() {
-  if (!escena?.renderer) return;
+  if (!escena?.renderer) {
+    Alertas.mostrar(
+      'warning',
+      'Escáner no disponible',
+      'Espera a que la escena AR termine de cargar.'
+    );
+    return;
+  }
   const render = escena.renderer.domElement;
   const video = [...document.querySelectorAll('video')].find(v => v.readyState >= 2 && v.videoWidth);
   const ancho = render.width, alto = render.height;
-  if (!ancho || !alto) return;
+  if (!ancho || !alto) {
+    Alertas.mostrar(
+      'warning',
+      'Captura no disponible',
+      'La cámara todavía no tiene una imagen válida.'
+    );
+    return;
+  }
   const canvas = document.createElement('canvas');
   canvas.width = ancho; canvas.height = alto;
   const ctx = canvas.getContext('2d');
@@ -395,7 +470,15 @@ function tomarFoto() {
     $('fotoPreview').src = imagen;
     $('fotoDescargar').href = imagen;
     $('fotoOverlay').classList.add('show');
-  } catch (error) { console.error('No se pudo capturar:', error); }
+  } catch (error) {
+    console.error('No se pudo capturar:', error);
+
+    Alertas.mostrar(
+      'error',
+      'Error al tomar la fotografía',
+      'No se pudo generar la imagen. Comprueba que la cámara y el renderizador estén funcionando.'
+    );
+  }
 }
 
 function cerrarFoto() {
@@ -424,22 +507,17 @@ async function cerrarEscaner() {
   confeti = null;
 }
 
+
 async function cargarUsuario() {
   const nombre = $('nombreUsuario');
   const foto = $('prof');
   const fotoDefault = '/media/imagenes/fedep.png';
 
   try {
-    const respuesta = await fetch('/api/usuario/perfil', {
-      method: 'GET',
-      credentials: 'same-origin'
-    });
-
-    if (!respuesta.ok) {
-      throw new Error(`HTTP ${respuesta.status}`);
-    }
-
-    const usuario = await respuesta.json();
+    const usuario = await Alertas.peticion(
+      '/api/usuario/perfil',
+      { method: 'GET' }
+    );
 
     nombre.textContent = usuario.nombre || 'Usuario';
 
@@ -456,7 +534,10 @@ async function cargarUsuario() {
 
     nombre.textContent = 'Usuario';
     foto.src = fotoDefault;
+
+    await Alertas.error(error);
   }
 }
+
 
 

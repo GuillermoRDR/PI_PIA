@@ -422,3 +422,67 @@ FROM equipo e
 JOIN estadistica_equipo s
     ON e.equipo_id = s.equipo_id;
 
+
+INSERT INTO recurso_equipo (multimedia_id, equipo_id)
+SELECT e.modelo_ar_id, e.equipo_id
+FROM equipo e
+JOIN recurso_multimedia rm
+  ON rm.multimedia_id = e.modelo_ar_id
+WHERE rm.tipo_recurso = 'modelo_3d'
+ON CONFLICT DO NOTHING;
+
+
+SELECT
+  e.nombre,
+  COUNT(DISTINCT rm.multimedia_id) AS modelos_asociados
+FROM equipo e
+LEFT JOIN recurso_equipo re
+  ON re.equipo_id = e.equipo_id
+LEFT JOIN recurso_multimedia rm
+  ON rm.multimedia_id = re.multimedia_id
+ AND rm.tipo_recurso = 'modelo_3d'
+WHERE e.target_index_e BETWEEN 0 AND 14
+GROUP BY e.equipo_id, e.nombre
+ORDER BY e.nombre;
+
+select * from recurso_multimedia;
+
+
+
+BEGIN;
+
+UPDATE carta c
+SET
+  titulo = datos.titulo,
+  descripcion = datos.descripcion,
+  imagen_url = datos.imagen_url
+FROM (
+  VALUES
+  (
+    'Sultanes de Monterrey',
+    'Sultanes de Monterrey',
+    'Representantes de Monterrey y conocidos como los Fantasmas Grises, los Sultanes son uno de los equipos de mayor tradición en el béisbol mexicano.',
+    'https://firebasestorage.googleapis.com/v0/b/pi-pia.firebasestorage.app/o/cartas%2FCarta1.png?alt=media&token=0f512f61-e5d6-44ee-ad40-37179874ec76'
+  ),
+  (
+    'Saraperos de Saltillo',
+    'Saraperos de Saltillo',
+    'Orgullo de Saltillo, Coahuila, los Saraperos destacan por su identidad regional y su arraigada tradición dentro de la Liga Mexicana de Béisbol.',
+    'https://firebasestorage.googleapis.com/v0/b/pi-pia.firebasestorage.app/o/cartas%2FCarta2.png?alt=media&token=7168eb96-e007-48a4-a12f-f35d6187c7da'
+  )
+) AS datos(nombre, titulo, descripcion, imagen_url)
+JOIN equipo e
+  ON e.nombre = datos.nombre
+WHERE c.equipo_id = e.equipo_id
+RETURNING c.carta_id, c.titulo, c.imagen_url;
+
+COMMIT;
+
+SELECT
+    e.nombre AS equipo_sin_carta
+FROM equipo e
+LEFT JOIN carta c
+    ON c.equipo_id = e.equipo_id
+WHERE e.target_index_e BETWEEN 0 AND 14
+  AND c.carta_id IS NULL
+ORDER BY e.nombre;

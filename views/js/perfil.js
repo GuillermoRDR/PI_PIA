@@ -3,13 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
   inicializarPerfil();
 });
 
+
 async function inicializarPerfil() {
   try {
-    // Primero comprobamos que la sesión sea válida.
     await cargarDatosUsuario();
 
-    // Las otras secciones son independientes.
-    await Promise.allSettled([
+    const resultados = await Promise.allSettled([
       cargarPuntuaciones(),
       cargarCartaFavorita()
     ]);
@@ -17,45 +16,28 @@ async function inicializarPerfil() {
   } catch (error) {
     console.error('Error al cargar perfil:', error);
 
-    if (error.status === 401 || error.status === 404) {
-      await Swal.fire({
-        icon: 'error',
-        title: 'Error de autenticación',
-        text: 'Por favor, inicia sesión para ver tu perfil.'
-      });
-
-      window.location.href = '/inicioSesion';
+    if (error.status === 404) {
+      await Alertas.mostrar(
+        'error',
+        'Perfil no encontrado',
+        'No encontramos la información de tu cuenta.'
+      );
       return;
     }
 
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'No se pudo cargar la información del perfil.'
-    });
+    await Alertas.error(error);
   }
 }
 
 async function obtenerJSON(url) {
-  const respuesta = await fetch(url, {
+  return Alertas.peticion(url, {
     method: 'GET',
-    credentials: 'same-origin',
     headers: {
-      'Accept': 'application/json'
+      Accept: 'application/json'
     }
   });
-
-  if (!respuesta.ok) {
-    const error = new Error(
-      `Error al consultar ${url}`
-    );
-
-    error.status = respuesta.status;
-    throw error;
-  }
-
-  return respuesta.json();
 }
+
 
 async function cargarDatosUsuario() {
   const usuario = await obtenerJSON(
@@ -106,7 +88,9 @@ async function cargarPuntuaciones() {
     console.error('Error al cargar puntuaciones:', error);
 
     trivia.textContent = '—';
-    juego.textContent = 'Próximamente';
+    juego.textContent = 'No disponible';
+
+    await Alertas.error(error);
   }
 }
 
@@ -114,7 +98,7 @@ async function cargarCartaFavorita() {
   const contenedor = document.getElementById('perfil-carta-favorita');
 
   try {
-    const { carta } = await obtenerJSON( '/api/recompensas/favorita');
+    const { carta } = await obtenerJSON('/api/recompensas/favorita');
 
     contenedor.replaceChildren();
 
@@ -122,7 +106,7 @@ async function cargarCartaFavorita() {
       const mensaje = document.createElement('p');
 
       mensaje.className = 'carta-vacia';
-      mensaje.textContent = 'Todavía no has seleccionado una carta favorita. ' + 'Puedes elegirla desde tu colección.' 
+      mensaje.textContent = 'Todavía no has seleccionado una carta favorita. ' + 'Puedes elegirla desde tu colección.'
       contenedor.appendChild(mensaje);
       return;
     }
@@ -151,20 +135,23 @@ async function cargarCartaFavorita() {
 
     contenedor.appendChild(equipo);
 
-    const rareza = Math.max( 1, Math.min(5, Number(carta.rareza) || 1));
+    const rareza = Math.max(1, Math.min(5, Number(carta.rareza) || 1));
 
     const estrellas = document.createElement('p');
 
     estrellas.className = 'carta-favorita-estrellas';
     estrellas.textContent = '★'.repeat(rareza) + '☆'.repeat(5 - rareza);
 
-    estrellas.setAttribute( 'aria-label', `${rareza} de 5 estrellas`);
+    estrellas.setAttribute('aria-label', `${rareza} de 5 estrellas`);
 
     contenedor.appendChild(estrellas);
 
   } catch (error) {
-    console.error( 'Error al cargar carta favorita:', error);
+    console.error('Error al cargar carta favorita:', error);
 
-    contenedor.textContent = 'No se pudo cargar la carta favorita.';
+    contenedor.textContent =
+      'No se pudo cargar la carta favorita.';
+
+    await Alertas.error(error);
   }
 }

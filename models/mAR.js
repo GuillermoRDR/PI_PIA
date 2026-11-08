@@ -1,3 +1,4 @@
+
 const pool = require('../config/db');
 
 const columnasEquipo = `
@@ -9,6 +10,22 @@ const columnasEquipo = `
   e.logo_url,
   e.target_index_e,
   rm.archivo_url AS modelo_url,
+
+  COALESCE((
+    SELECT json_agg(
+      json_build_object(
+        'multimedia_id', r.multimedia_id,
+        'titulo', r.titulo,
+        'archivo_url', r.archivo_url
+      )
+      ORDER BY r.multimedia_id
+    )
+    FROM recurso_equipo re
+    JOIN recurso_multimedia r
+      ON r.multimedia_id = re.multimedia_id
+    WHERE re.equipo_id = e.equipo_id
+      AND r.tipo_recurso = 'modelo_3d'
+  ), '[]'::json) AS modelos,
 
   s.temporada,
   s.juegos_jugados,

@@ -6,6 +6,19 @@ let procesando = false;
 
 const $ = id => document.getElementById(id);
 
+function mezclarOpciones(opciones) {
+  const mezcladas = [...opciones];
+
+  for (let i = mezcladas.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [mezcladas[i], mezcladas[j]] =
+      [mezcladas[j], mezcladas[i]];
+  }
+
+  return mezcladas;
+}
+
 const pantallas = [
   'introduccion',
   'juego',
@@ -20,15 +33,23 @@ function mostrarPantalla(nombre) {
   $('error-general').hidden = true;
 }
 
-function mostrarError(error) {
-  $('error-general').textContent = error.message;
+
+async function mostrarError(error) {
+  console.error('Error de trivia:', error);
+
+  $('error-general').textContent =
+    error.message || 'Ocurrió un error.';
+
   $('error-general').hidden = false;
+
+  await Alertas.error(error);
 }
+
+
 
 async function peticion(url, metodo = 'GET', datos = null) {
   const opciones = {
     method: metodo,
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
     }
@@ -38,17 +59,9 @@ async function peticion(url, metodo = 'GET', datos = null) {
     opciones.body = JSON.stringify(datos);
   }
 
-  const respuesta = await fetch(url, opciones);
-  const contenido = await respuesta.json();
-
-  if (!respuesta.ok) {
-    throw new Error(
-      contenido.error || 'Ocurrió un error'
-    );
-  }
-
-  return contenido;
+  return Alertas.peticion(url, opciones);
 }
+
 
 async function comenzarTrivia() {
   if (procesando) return;
@@ -57,19 +70,20 @@ async function comenzarTrivia() {
   $('comenzar').disabled = true;
 
   try {
-    const datos = await peticion(
-      '/api/trivia/iniciar',
-      'POST'
-    );
+    const datos = await peticion('/api/trivia/iniciar', 'POST');
 
     intentoId = datos.intento_id;
-    preguntas = datos.preguntas;
+
+    preguntas = datos.preguntas.map(pregunta => ({
+      ...pregunta,
+      opciones: mezclarOpciones(pregunta.opciones)
+    }));
+
 
     if (preguntas.length !== 5) {
       throw new Error('No se recibieron cinco preguntas');
     }
 
-    // Primera pregunta que todavía no tiene respuesta.
     const pendiente = preguntas.findIndex(
       p => p.respuesta_guardada == null
     );
@@ -77,15 +91,14 @@ async function comenzarTrivia() {
     mostrarPantalla('juego');
 
     if (pendiente === -1) {
-      // Todas las preguntas ya estaban respondidas.
       await finalizarTrivia();
     } else {
       indice = pendiente;
-      mostrarPregunta();
+      await mostrarPregunta();
     }
 
   } catch (error) {
-    mostrarError(error);
+    await mostrarError(error);
   } finally {
     procesando = false;
     $('comenzar').disabled = false;
@@ -195,7 +208,10 @@ async function responderPregunta(pregunta, opcion) {
 
   } catch (error) {
     botones.forEach(boton => boton.disabled = false);
-    $('mensaje').textContent = error.message;
+
+    $('mensaje').textContent = 'No se pudo guardar la respuesta.';
+
+    await Alertas.error(error);
   } finally {
     procesando = false;
   }
@@ -246,7 +262,7 @@ async function finalizarTrivia() {
     mostrarPantalla('resultado');
 
   } catch (error) {
-    mostrarError(error);
+    await mostrarError(error);
   } finally {
     $('siguiente').disabled = false;
   }

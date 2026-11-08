@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const nombre = document.getElementById('nombre').value.trim();
       const correo = document.getElementById('correo').value.trim();
       const contra = document.getElementById('contra').value;
-      const verificarContra = document.getElementById('verificarContra').value; 
+      const verificarContra = document.getElementById('verificarContra').value;
 
       const esValido = validarDatos(nombre, correo, contra, verificarContra, fotoIngresa);
       if (!esValido) return;
@@ -27,47 +27,33 @@ document.addEventListener("DOMContentLoaded", () => {
       if (fotoIngresa.files[0]) {
         formData.append('fotoPerfil', fotoIngresa.files[0]);
       }
+      const boton = form.querySelector('[type="submit"]');
+
+      if (boton) boton.disabled = true;
 
       try {
-        const respuesta = await fetch('/api/usuario/registro', {
-          method: 'POST',
-          body: formData
+        const datos = await Alertas.peticion(
+          '/api/usuario/registro',
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
+
+        await Swal.fire({
+          icon: 'success',
+          title: '¡Registro exitoso!',
+          text: datos.mensaje || 'Tu cuenta fue creada correctamente.',
+          timer: 2000,
+          showConfirmButton: false
         });
 
-        const datos = await respuesta.json();
+        window.location.href = '/inicioSesion';
 
-        if (respuesta.status === 201) {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Registro exitoso!',
-            text: 'Tu cuenta ha sido creada. Ahora puedes iniciar sesión.',
-            timer: 2000,
-            showConfirmButton: false
-          }).then(() => {
-            window.location.href = '/inicioSesion';
-          });
-
-        } else if (respuesta.status === 400) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Atención',
-            text: datos.error || 'Por favor verifica los datos ingresados.'
-          });
-
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error de Servidor',
-            text: 'Ocurrió un problema en el servidor. Inténtalo más tarde.'
-          });
-        }
-
-      } catch (errorRed) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Sin conexión',
-          text: 'No se pudo conectar con el servidor.'
-        });
+      } catch (error) {
+        await Alertas.error(error);
+      } finally {
+        if (boton) boton.disabled = false;
       }
     });
   }

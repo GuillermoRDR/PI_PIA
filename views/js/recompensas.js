@@ -12,25 +12,16 @@ let cartaSeleccionada = null;
 let estado = null;
 let canjeando = false;
 
+
 async function solicitar(url, metodo = 'GET') {
-  const respuesta = await fetch(url, {
+  return Alertas.peticion(url, {
     method: metodo,
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json'
     }
   });
-
-  const datos = await respuesta.json();
-
-  if (!respuesta.ok) {
-    throw new Error(
-      datos.error || 'Error al comunicarse con el servidor'
-    );
-  }
-
-  return datos;
 }
+
 
 async function cargarRecompensas() {
   estado = await solicitar('/api/recompensas');
@@ -199,8 +190,14 @@ async function canjearCarta() {
 
     $('modal-premio').showModal();
 
+
   } catch (error) {
-    $('mensaje').textContent = error.message;
+    console.error('Error al canjear carta:', error);
+
+    $('mensaje').textContent =
+      'No se pudo completar el canje.';
+
+    await Alertas.error(error);
   } finally {
     canjeando = false;
 
@@ -284,25 +281,13 @@ async function cambiarFavorita() {
   boton.disabled = true;
 
   try {
-    const respuesta = await fetch(
+    const datos = await solicitar(
       `/api/recompensas/favorita/${cartaSeleccionada.carta_id}`,
-      {
-        method: 'PATCH',
-        credentials: 'same-origin'
-      }
+      'PATCH'
     );
-
-    const datos = await respuesta.json();
-
-    if (!respuesta.ok) {
-      throw new Error(
-        datos.error || 'No se pudo actualizar'
-      );
-    }
 
     const favoritaId = datos.carta_favorita_id;
 
-    // Sincronizar el estado local.
     for (const carta of estado.coleccion) {
       carta.favorita =
         carta.carta_id === favoritaId;
@@ -317,7 +302,10 @@ async function cambiarFavorita() {
     $('mensaje-carta').textContent = datos.mensaje;
 
   } catch (error) {
-    $('mensaje-carta').textContent = error.message;
+    $('mensaje-carta').textContent =
+      'No se pudo actualizar la carta favorita.';
+
+    await Alertas.error(error);
   } finally {
     boton.disabled = false;
   }
@@ -357,8 +345,13 @@ async function compartirCarta() {
     }
   } catch (error) {
     if (error.name !== 'AbortError') {
-      $('mensaje-carta').textContent =
-        'No se pudo compartir la carta';
+      console.error('Error al compartir carta:', error);
+
+      await Alertas.mostrar(
+        'error',
+        'No se pudo compartir',
+        'Verifica los permisos del navegador e inténtalo nuevamente.'
+      );
     }
   }
 }
@@ -368,6 +361,13 @@ $('boton-compartir').addEventListener(
   compartirCarta
 );
 
-cargarRecompensas().catch(error => {
-  $('mensaje').textContent = error.message;
+cargarRecompensas().catch(async error => {
+  console.error('Error al cargar recompensas:', error);
+
+  $('mensaje').textContent =
+    'No se pudo cargar tu colección.';
+
+  $('canjear').disabled = true;
+
+  await Alertas.error(error);
 });
