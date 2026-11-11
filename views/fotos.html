@@ -14,40 +14,33 @@
 
 <body>
 
-  <button id="back" onclick="window.location.href='galeria.html'"> 
+  <button id="back" onclick="window.location.href='galeria.html'">
     <img id="back" src="media/imagenes/back.png">
   </button>
 
   <div class="efecto">
     <h1 class="trivia">Fotografías</h1>
   </div>
-  
+
   <div id="galeria">
     <input type="checkbox" id="fav">
-    <label id="favt">Fotos favoritas</label>
-    <br>
-    <br>
-    <br>
-    <img src="media/imagenes/mini.jpg" alt="foto" id="foto" onclick="openf(this)">
+    <label id="favt" for="fav">Fotos favoritas</label>
+
+    <div id="lista" aria-live="polite"></div>
+    <p id="vacio" class="oculto"></p>
   </div>
 
   <div id="extend">
-    <img id="extendf" src="media/imagenes/photo.jpg" alt="foto ampliada">
-    <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
-    <button id="share"><img src="media/imagenes/share.png" alt="share" id="sharei"></button>
-    <button id="favf"><img src="media/imagenes/star.png" alt="star" id="star"></button>
-    <button id="delete"><img src="media/imagenes/trash.png" alt="trash" id="trash"></button>
+    <img id="extendf" alt="foto ampliada">
+    <button id="hide" type="button" aria-label="Cerrar"><img src="media/imagenes/x.png" alt="X" id="x"></button>
+    <button id="share" type="button" aria-label="Compartir"><img src="media/imagenes/share.png" alt="share" id="sharei"></button>
+    <button id="favf" type="button" aria-label="Marcar como favorita"><img src="media/imagenes/star.png" alt="star" id="star"></button>
+    <button id="delete" type="button" aria-label="Eliminar"><img src="media/imagenes/trash.png" alt="trash" id="trash"></button>
   </div>
 
-  <script>
-    function openf(img) {
-      document.getElementById('extend').classList.add('show');
-    }
-
-    function closef() {
-      document.getElementById('extend').classList.remove('show');
-    }
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/alertas.js"></script>
+  <script src="js/fotos.js"></script>
 </body>
 
 </html>

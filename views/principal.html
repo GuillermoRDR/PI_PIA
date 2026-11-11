@@ -31,19 +31,18 @@
 </head>
 
 <body>
-  <!-- Menú principal: conserva sus identificadores y apariencia original -->
   <button id="conf" type="button"><img id="confIcon" src="media/imagenes/Conf.png" alt="Configuración"></button>
   <button id="usu" type="button">
     <span id="nombreUsuario">Usuario</span>
     <img id="prof" src="media/imagenes/fedep.png" alt="Foto de perfil">
   </button>
+  <button id="gal" type="button">Galería</button>
   <img id="logo" src="media/imagenes/BASET.png" alt="Batea">
   <button class="bottom" id="tri" type="button">Trivia</button>
-  <button class="bottom" id="gal" type="button">Galería</button>
+  <button class="bottom" id="jug" type="button">¡BATEA!</button>
   <button id="esc" type="button">Escanea</button>
   <audio autoplay src="media/music/Principal.mp3" type="audio/mpeg" loop></audio>
 
-  <!-- Escáner y visualizador AR: una sola escena para los 15 equipos -->
   <div id="extend" role="dialog" aria-label="Escáner de realidad aumentada" aria-modal="true">
     <div id="arContainer"></div>
     <div id="arOverlay" aria-hidden="true"></div>
@@ -159,7 +158,10 @@
       <button id="fotoCerrar" type="button" aria-label="Cerrar fotografía">✕</button>
       <img id="fotoPreview" alt="Captura AR">
       <p id="fotoAyuda">Mantén presionada la imagen para guardarla en tu galería</p>
-      <div id="fotoBotones"><a id="fotoDescargar" download="batea-foto.png">Descargar</a></div>
+            <div id="fotoBotones">
+        <a id="fotoDescargar" download="batea-foto.png">Descargar</a>
+        <button id="fotoGuardar" type="button">Guardar en galería</button>
+      </div>
     </div>
   </div>
 </body>

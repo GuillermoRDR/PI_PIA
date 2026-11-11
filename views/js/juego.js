@@ -15,6 +15,34 @@ const VELOCIDAD_MAXIMA = 10;
 const META_PUNTOS = 1000;
 const HITOS = [100, 500, 1000];
 const POSICIONES_BARRA = [[0, 0], [100, 0.18], [500, 0.58], [1000, 1]];
+const PUNTOS_SINGLE = 1;
+const PUNTOS_DOBLE = 2;
+const PUNTOS_TRIPLE = 3;
+const BONO_HOME_RUN = 0.005;
+const RESTA_STRIKE = 20;
+const DIVISOR_RECOMPENSA = 10;
+
+function calcularResultado() {
+  const golpesNormales =
+    singles * PUNTOS_SINGLE +
+    dobles * PUNTOS_DOBLE +
+    triples * PUNTOS_TRIPLE;
+  const multiplicador = Math.pow(1 + BONO_HOME_RUN, homeRuns);
+  const puntuacionFinal = Math.max(
+    0,
+    Math.round((puntos + golpesNormales) * multiplicador - strikes * RESTA_STRIKE)
+  );
+  const puntosRecompensa = Math.max(
+    0,
+    Math.round((puntos / DIVISOR_RECOMPENSA + golpesNormales) * multiplicador - strikes * RESTA_STRIKE)
+  );
+  return { puntuacionFinal, puntosRecompensa };
+}
+
+function mostrarResultado({ puntuacionFinal, puntosRecompensa }) {
+  $('resultado-puntaje').textContent = `Puntaje del juego: ${puntuacionFinal}`;
+  $('resultado-recompensa').textContent = `Puntaje de recompensas: ${puntosRecompensa}`;
+}
 
 let strikes = 0;
 let lanzamientos = 0;
@@ -28,8 +56,12 @@ let frame = 0;
 let puntos = 0;
 let golpes = 0;
 let homeRuns = 0;
+let singles = 0;
+let dobles = 0;
+let triples = 0;
 let pistaActual = null;
 let ultimaZona = null;
+let partidaPendiente = null;
 
 const MUSICA = {
   intro: new Audio('media/music/intro.mp3'),
@@ -176,6 +208,9 @@ function batear() {
   lanzamientos++;
   golpes++;
   if (esHomeRun) homeRuns++;
+  else if (posicion >= 0.82) triples++;
+  else if (posicion >= 0.64) dobles++;
+  else singles++;
   puntos = Math.min(META_PUNTOS, puntos + obtenidos);
 
   const nombre =
@@ -253,9 +288,11 @@ function terminar(victoria) {
   $('resultado-titulo').textContent =
     victoria ? 'Ganaste!!!' : 'Out!!! Estás fuera.';
   $('resultado-estadisticas').textContent =
-    `Hits: ${golpes} · Home Runs: ${homeRuns} · Strikes: ${strikes} · Puntos: ${puntos}`;
+    `Singles: ${singles} · Doubles: ${dobles} · Triples: ${triples} · Home Runs: ${homeRuns} · Strikes: ${strikes}`;
+  mostrarResultado(calcularResultado());
 
   mostrarPantalla('resultado');
+  guardarPartida();
 }
 
 function comenzarJuego() {
@@ -263,7 +300,11 @@ function comenzarJuego() {
   strikes = 0;
   golpes = 0;
   homeRuns = 0;
+  singles = 0;
+  dobles = 0;
+  triples = 0;
   lanzamientos = 0;
+  iniciarPartidaServidor();
 
   reproducirEfecto('boton');
   cambiarMusica('juego');
@@ -285,3 +326,40 @@ document.addEventListener('keydown', evento => {
     batear();
   }
 });
+
+async function enviar(url, cuerpo) {
+  const respuesta = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(cuerpo || {})
+  });
+  const datos = await respuesta.json().catch(() => ({}));
+  if (!respuesta.ok) throw new Error(datos.error || 'Error de servidor');
+  return datos;
+}
+
+function iniciarPartidaServidor() {
+  partidaPendiente = enviar('/api/juego/iniciar')
+    .then(d => d.partida_id)
+    .catch(() => null);
+}
+
+async function guardarPartida() {
+  const resumen = { puntuacion: puntos, singles, dobles, triples, homeRuns, strikes };
+  const aviso = $('resultado-guardado');
+  aviso.textContent = 'Guardando partida...';
+
+  const partidaId = await partidaPendiente;
+  if (!partidaId) {
+    aviso.textContent = 'Inicia sesión para guardar tus puntos.';
+    return;
+  }
+
+  try {
+    const r = await enviar('/api/juego/finalizar', { partida_id: partidaId, ...resumen });
+    mostrarResultado({ puntuacionFinal: r.puntuacion, puntosRecompensa: r.puntos_obtenidos });
+    aviso.textContent = 'Partida guardada.';
+  } catch {
+    aviso.textContent = 'No se pudo guardar la partida.';
+  }
+}

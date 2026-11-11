@@ -1,18 +1,4 @@
-html{
-  margin: 0;
-  padding: 0;
-}
 
-body
-{
-    background: linear-gradient(180deg, #FBD0FC, #B160C5, #7E3995, #260532);
-    margin: 0;
-  padding: 0;
-  align-content: center;
-  text-align: center;
-  background-repeat: no-repeat;
-   min-height: 100vh;
-}
 
 
 
@@ -69,36 +55,7 @@ button{
     justify-content:center;
 }
 
-.trivia{
-    margin:0;
-    font-family: 'Alfa Slab One', cursive;
-    font-size:80px;
-    color:white;
 
-    position: fixed;
-  top: 19%;
-  left: 50%;
-  transform: translate(-50%, -50%);
- 
-    text-shadow:
-      -2px 2px 0 #260532,
-      -3px 3px 0 #260532,
-      -4px 4px 0 #260532,
-      -5px 5px 0 #260532;
-  }
-
- 
-div#galeria {
-     background-color: white;
-    border-radius: 10%;
-    min-height: 70vh;
-    width: 90%;
-    background-repeat: no-repeat;
-    position: relative;
-    left:50%;
-  transform: translate(-50%, 5%);
-  text-align: center;
-}
 
 input#fav{
     position: absolute;
@@ -271,4 +228,110 @@ background: #F8A5A2;
 
 button#delete:active {
 background: #890200;
+}
+
+#lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 16px;
+    justify-items: center;
+    padding: 90px 5% 28px;
+}
+
+.mini-marco {
+    position: relative;
+    width: 100px;
+    height: 140px;
+}
+
+img.mini {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 3px solid black;
+    border-radius: 10%;
+    box-sizing: border-box;
+    cursor: pointer;
+    background: #eee;
+}
+
+.mini-marco.es-fav::after {
+    content: "\2605";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 50%;
+    background: #FFB300;
+    border: 2px solid white;
+    color: white;
+    font-size: 15px;
+    text-align: center;
+    pointer-events: none;
+}
+
+#vacio {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    margin: 0;
+    font-family: 'Alfa Slab One', cursive;
+    font-size: clamp(14px, 2.4vw, 20px);
+    color: #7E3995;
+}
+
+button#favf.activa {
+    background: linear-gradient(180deg, #FFE27A, #FFC107, #FF9800);
+    border-color: #FFF3B0;
+    box-shadow: 0 0 14px 5px rgba(255, 213, 79, 0.9);
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  background: #260532;
+}
+
+body {
+  background: linear-gradient(180deg, #FBD0FC, #B160C5, #7E3995, #260532);
+  margin: 0;
+  padding: 0;
+  align-content: start;
+  text-align: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flow-root;
+}
+
+.trivia {
+  margin: 0;
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 80px;
+  color: white;
+  position: absolute;
+  top: 19%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-shadow:
+    -2px 2px 0 #260532,
+    -3px 3px 0 #260532,
+    -4px 4px 0 #260532,
+    -5px 5px 0 #260532;
+}
+
+div#galeria {
+  background-color: white;
+  border-radius: 40px;
+  min-height: 70vh;
+  width: 90%;
+  background-repeat: no-repeat;
+  position: relative;
+  margin: 22vh auto 40px;
+  text-align: center;
+  box-sizing: border-box;
 }

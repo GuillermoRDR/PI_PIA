@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galería de videos</title>
 
-  <link href="css/videos.css?v=2" rel="stylesheet">
+  <link href="css/videos.css?v=5" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
@@ -22,89 +22,157 @@
   </div>
 
   <div id="galeria">
-    <input type="text" id="bus" placeholder="Buscar video por título">
-    <br>
-    <br>
-    <br>
-    <img src="media/imagenes/mascot.png" alt="foto" id="foto" data-video="media/video/mascot.mp4" onclick="openf(this)">
+    <input type="text" id="bus" placeholder="Buscar video por título" autocomplete="off" aria-label="Buscar video por título">
+        <div id="lista-videos" aria-live="polite"></div>
+    <p id="vacio-videos" class="oculto"></p>
   </div>
 
   <div id="extend">
-    <video id="extendf" controls></video>
-    <canvas id="extendc"></canvas>
-    <div id="ctrl">
-      <button id="pp" type="button" aria-label="Reproducir o pausar">▶</button>
-      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Progreso">
-      <span id="tiempo">0:00</span>
+    <div id="barra">
+      <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
+      <button id="filtros" onclick="alternarfi(event)">Filtros</button>
     </div>
-    <button id="hide" onclick="closef()"><img src="media/imagenes/x.png" alt="X" id="x"></button>
-    <button id="filtros" onclick="openfi(this)">Filtros</button>
-  </div>
 
-  <div id="extendfi">
-    <button id="hidefi" onclick="closefi()"><img src="media/imagenes/x.png" alt="X2" id="x2"></button>
-    <button id="nof" class="filtro" data-f="">Sin filtro</button>
-    <button id="des" class="filtro" data-f="des">Desenfoque</button>
-    <button id="pix" class="filtro" data-f="pix">Pixelado</button>
-    <button id="col" class="filtro" data-f="col">Colores pastel</button>
-    <button id="ret" class="filtro" data-f="ret">Retro digital</button>
+    <div id="extendfi">
+      <div id="lista">
+        <button id="nof" class="filtro" data-f="">Sin filtro</button>
+        <button id="des" class="filtro" data-f="des">Desenfoque</button>
+        <button id="pix" class="filtro" data-f="pix">Pixelado</button>
+        <button id="col" class="filtro" data-f="col">Colores pastel</button>
+        <button id="ret" class="filtro" data-f="ret">Retro digital</button>
+      </div>
+    </div>
+
+    <div id="zona">
+      <div id="caja">
+        <div id="escena">
+          <video id="extendf" playsinline></video>
+          <canvas id="extendc"></canvas>
+        </div>
+        <div id="ctrl">
+          <button id="atras" class="cb" type="button" aria-label="Retroceder 10 segundos">-10s</button>
+          <button id="pp" class="cb" type="button" aria-label="Reproducir o pausar">▶</button>
+          <button id="adelante" class="cb" type="button" aria-label="Adelantar 10 segundos">+10s</button>
+          <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Progreso">
+          <span id="tiempo">0:00 / 0:00</span>
+          <button id="vol" class="cb" type="button" aria-label="Silenciar o activar sonido">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9v6h4l5 4V5L7 9H3z" fill="white" />
+              <g id="ondas">
+                <path d="M15.5 9a4.5 4.5 0 0 1 0 6" />
+                <path d="M18.5 6.5a8 8 0 0 1 0 11" />
+              </g>
+              <g id="cruz">
+                <path d="M16 9l5 6M21 9l-5 6" />
+              </g>
+            </svg>
+          </button>
+          <input type="range" id="volrange" min="0" max="100" value="100" aria-label="Volumen">
+          <button id="full" class="cb" type="button" aria-label="Pantalla completa">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
+    const extend = document.getElementById('extend');
     const video = document.getElementById('extendf');
     const lienzo = document.getElementById('extendc');
     const cx = lienzo.getContext('2d');
     const chico = document.createElement('canvas');
     const cc = chico.getContext('2d', { willReadFrequently: true });
-    const ctrl = document.getElementById('ctrl');
+    const caja = document.getElementById('caja');
+    const panel = document.getElementById('extendfi');
+    const btnFiltros = document.getElementById('filtros');
     const pp = document.getElementById('pp');
+    const atras = document.getElementById('atras');
+    const adelante = document.getElementById('adelante');
+    const full = document.getElementById('full');
+    const vol = document.getElementById('vol');
+    const volrange = document.getElementById('volrange');
+    const ondas = document.getElementById('ondas');
+    const cruz = document.getElementById('cruz');
     const seek = document.getElementById('seek');
     const tiempo = document.getElementById('tiempo');
 
     const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
     const GAMEBOY = [[15, 56, 15], [48, 98, 48], [139, 172, 15], [155, 188, 15]];
 
+    const escritorio = window.matchMedia('(min-width: 901px)');
+
     let filtro = null;
     let raf = 0;
+    let panelAbierto = false;
 
     function openf(img) {
       aplicarFiltro(null);
-      document.getElementById('extendf').src = img.dataset.video;
-      document.getElementById('extend').classList.add('show');
-    }
-
-    function openfi(img) {
-      document.getElementById('extendfi').classList.add('showfi');
+      closefi();
+      video.crossOrigin = 'anonymous';
+      video.src = img.dataset.video;
+      extend.classList.add('show');
     }
 
     function closef() {
       video.pause();
+      video.removeAttribute('src');
+      video.load();
+      closefi();
       aplicarFiltro(null);
-      document.getElementById('extend').classList.remove('show');
+      if (document.fullscreenElement) document.exitFullscreen();
+      extend.classList.remove('show');
+    }
+
+    function medirPanel() {
+      if (!panelAbierto) return;
+      const h = panel.scrollHeight;
+      if (escritorio.matches) {
+        panel.style.maxHeight = Math.min(h, window.innerHeight - 77) + 'px';
+        extend.style.setProperty('--panel', '0px');
+      } else {
+        panel.style.maxHeight = h + 'px';
+        extend.style.setProperty('--panel', (h + 8) + 'px');
+      }
+    }
+
+    function openfi() {
+      panelAbierto = true;
+      panel.classList.add('showfi');
+      medirPanel();
     }
 
     function closefi() {
-      document.getElementById('extendfi').classList.remove('showfi');
+      panelAbierto = false;
+      panel.classList.remove('showfi');
+      panel.style.maxHeight = '0px';
+      extend.style.setProperty('--panel', '0px');
+    }
+
+    function alternarfi(e) {
+      if (e) e.stopPropagation();
+      if (panelAbierto) closefi();
+      else openfi();
     }
 
     function ajustar() {
-      const w = video.offsetWidth;
-      const h = video.offsetHeight;
+      const w = video.clientWidth;
+      const h = video.clientHeight;
       if (!w || !h) return;
 
-      if (lienzo.width !== w || lienzo.height !== h) {
+      const cambio = lienzo.width !== w || lienzo.height !== h;
+
+      if (cambio) {
         lienzo.width = w;
         lienzo.height = h;
       }
 
-      lienzo.style.left = video.offsetLeft + 'px';
-      lienzo.style.top = video.offsetTop + 'px';
       lienzo.style.width = w + 'px';
       lienzo.style.height = h + 'px';
 
-      ctrl.style.left = video.offsetLeft + 'px';
-      ctrl.style.width = w + 'px';
-      ctrl.style.top = (video.offsetTop + h - ctrl.offsetHeight) + 'px';
+      if (cambio && filtro) pintar();
     }
 
     function aplicarFiltro(f) {
@@ -113,7 +181,6 @@
 
       const activo = !!f;
       lienzo.classList.toggle('activo', activo);
-      ctrl.classList.toggle('activo', activo);
       video.style.visibility = activo ? 'hidden' : 'visible';
 
       document.querySelectorAll('#extendfi .filtro').forEach(function (b) {
@@ -128,7 +195,11 @@
 
     function dibujar() {
       if (!filtro) return;
+      pintar();
+      raf = requestAnimationFrame(dibujar);
+    }
 
+    function pintar() {
       const vw = video.videoWidth;
       const vh = video.videoHeight;
 
@@ -215,8 +286,6 @@
           cx.drawImage(chico, dx, dy, dw, dh);
         }
       }
-
-      raf = requestAnimationFrame(dibujar);
     }
 
     function formato(s) {
@@ -226,6 +295,39 @@
       return m + ':' + (r < 10 ? '0' : '') + r;
     }
 
+    function actualizarTiempo() {
+      if (video.duration) seek.value = (video.currentTime / video.duration) * 1000;
+      else seek.value = 0;
+      tiempo.textContent = formato(video.currentTime) + ' / ' + formato(video.duration);
+    }
+
+    function alternar() {
+      if (video.paused) video.play();
+      else video.pause();
+    }
+
+    function saltar(s) {
+      const fin = isFinite(video.duration) ? video.duration : 0;
+      video.currentTime = Math.max(0, Math.min(fin, video.currentTime + s));
+    }
+
+    function pantallaCompleta() {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else if (caja.requestFullscreen) {
+        caja.requestFullscreen();
+      } else if (caja.webkitRequestFullscreen) {
+        caja.webkitRequestFullscreen();
+      }
+    }
+
+    function actualizarVolumen() {
+      const mudo = video.muted || video.volume === 0;
+      ondas.style.display = mudo ? 'none' : 'inline';
+      cruz.style.display = mudo ? 'inline' : 'none';
+      volrange.value = video.muted ? 0 : video.volume * 100;
+    }
+
     document.querySelectorAll('#extendfi .filtro').forEach(function (b) {
       b.addEventListener('click', function () {
         aplicarFiltro(b.dataset.f || null);
@@ -233,30 +335,59 @@
       });
     });
 
-    function alternar() {
-      if (video.paused) video.play();
-      else video.pause();
-    }
+    document.addEventListener('click', function (e) {
+      if (panelAbierto && !panel.contains(e.target) && e.target !== btnFiltros) closefi();
+    });
 
     pp.addEventListener('click', alternar);
+    video.addEventListener('click', alternar);
     lienzo.addEventListener('click', alternar);
+    atras.addEventListener('click', function () { saltar(-10); });
+    adelante.addEventListener('click', function () { saltar(10); });
+    full.addEventListener('click', pantallaCompleta);
 
+    vol.addEventListener('click', function () {
+      if (video.muted || video.volume === 0) {
+        video.muted = false;
+        if (video.volume === 0) video.volume = 0.5;
+      } else {
+        video.muted = true;
+      }
+    });
+
+    volrange.addEventListener('input', function () {
+      video.volume = volrange.value / 100;
+      video.muted = video.volume === 0;
+    });
+
+    video.addEventListener('volumechange', actualizarVolumen);
     video.addEventListener('play', function () { pp.textContent = '❚❚'; });
     video.addEventListener('pause', function () { pp.textContent = '▶'; });
-
-    video.addEventListener('timeupdate', function () {
-      if (video.duration) seek.value = (video.currentTime / video.duration) * 1000;
-      tiempo.textContent = formato(video.currentTime) + ' / ' + formato(video.duration);
+    video.addEventListener('timeupdate', actualizarTiempo);
+    video.addEventListener('loadedmetadata', function () {
+      actualizarTiempo();
+      ajustar();
     });
 
     seek.addEventListener('input', function () {
       if (video.duration) video.currentTime = (seek.value / 1000) * video.duration;
     });
 
-    video.addEventListener('loadedmetadata', ajustar);
-    window.addEventListener('resize', ajustar);
+    document.addEventListener('fullscreenchange', function () {
+      setTimeout(ajustar, 50);
+    });
+    window.addEventListener('resize', function () {
+      ajustar();
+      medirPanel();
+    });
+    escritorio.addEventListener('change', medirPanel);
     if (window.ResizeObserver) new ResizeObserver(ajustar).observe(video);
+
+    actualizarVolumen();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/alertas.js"></script>
+  <script src="js/videos.js"></script>
 </body>
 
 </html>
