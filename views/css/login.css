@@ -6,7 +6,7 @@ html{
 body {
     background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
     margin: 0;
-    min-height: 100vh;
+    min-height: 100dvh;
     background-repeat: no-repeat;
     align-items: center;
     text-align: center;
@@ -66,4 +66,31 @@ button{
     text-shadow:
       -1px 1px 0 black;
       font-family: 'Alfa Slab One', cursive;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img, video, canvas {
+  max-width: 100%;
+}
+
+button {
+  width: min(220px, 80vw);
+}
+
+input, select, textarea {
+  max-width: 100%;
+}
+
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09) no-repeat, #9F5D09;
 }

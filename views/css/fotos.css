@@ -303,7 +303,7 @@ body {
   align-content: start;
   text-align: center;
   background-repeat: no-repeat;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flow-root;
 }
 
@@ -334,4 +334,22 @@ div#galeria {
   margin: 22vh auto 40px;
   text-align: center;
   box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: linear-gradient(180deg, #FBD0FC, #B160C5, #7E3995, #260532) no-repeat, #260532;
+}
+
+button#back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+
+.trivia {
+  font-size: clamp(30px, 10.5vw, 80px);
+  white-space: nowrap;
 }

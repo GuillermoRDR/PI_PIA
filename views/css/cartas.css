@@ -11,7 +11,7 @@ body
   align-content: center;
   text-align: center;
   background-repeat: no-repeat;
-   min-height: 100vh;
+   min-height: 100dvh;
 }
 
 
@@ -354,4 +354,30 @@ input#bus{
 
 input#bus::placeholder {
     color: #889FDC;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img, video, canvas {
+  max-width: 100%;
+}
+
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: linear-gradient(180deg, #889FDC, #0339A6, #1E2E86, #141E59) no-repeat, #141E59;
+}
+
+button#back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
 }

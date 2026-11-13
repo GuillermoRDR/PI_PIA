@@ -9,7 +9,7 @@ body
   padding: 0;
  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09);
   background-repeat: no-repeat;
-   min-height: 100vh;
+   min-height: 100dvh;
    text-align: center;
 }
 button{
@@ -159,6 +159,25 @@ button#recomp:active
     color: #F8A5A2;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
-  
+img, video, canvas {
+  max-width: 100%;
+}
+
+  button#recomp {
+  width: min(260px, 80vw);
+}
+
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: linear-gradient(180deg, #F9D55C, #FFB300, #D97904, #9F5D09) no-repeat, #9F5D09;
+}

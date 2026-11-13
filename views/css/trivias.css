@@ -11,7 +11,7 @@ body
   align-content: center;
   text-align: center;
   background-repeat: no-repeat;
-   min-height: 100vh;
+   min-height: 100dvh;
 }
 
 
@@ -149,3 +149,15 @@ button#start:active
       -4px 4px 0 black;
 }
 
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: #e1d2a1;
+}
+
+button#back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}

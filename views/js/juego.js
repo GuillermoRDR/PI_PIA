@@ -59,9 +59,11 @@ let homeRuns = 0;
 let singles = 0;
 let dobles = 0;
 let triples = 0;
-let pistaActual = null;
 let ultimaZona = null;
 let partidaPendiente = null;
+
+
+let pistaActual = null;
 
 const MUSICA = {
   intro: new Audio('media/music/intro.mp3'),
@@ -98,10 +100,15 @@ function cambiarMusica(nombre) {
   }
 
   pistaActual = nombre;
-  MUSICA[nombre].play().catch(() => {});
+
+  if (BateaAudio.musicaActiva()) {
+    MUSICA[nombre].play().catch(() => {});
+  }
 }
 
 function reproducirEfecto(nombre) {
+  if (!BateaAudio.efectosActivos()) return;
+
   const efecto = EFECTOS[nombre];
   efecto.currentTime = 0;
   efecto.play().catch(() => {});
@@ -110,14 +117,18 @@ function reproducirEfecto(nombre) {
 function reanudarMusica() {
   document.removeEventListener('pointerdown', reanudarMusica);
   document.removeEventListener('keydown', reanudarMusica);
+  document.removeEventListener('click', reanudarMusica);
+  document.removeEventListener('touchend', reanudarMusica);
 
-  if (pistaActual === 'intro') {
+  if (pistaActual === 'intro' && BateaAudio.musicaActiva()) {
     MUSICA.intro.play().catch(() => {});
   }
 }
 
 document.addEventListener('pointerdown', reanudarMusica);
 document.addEventListener('keydown', reanudarMusica);
+document.addEventListener('click', reanudarMusica);
+document.addEventListener('touchend', reanudarMusica);
 
 cambiarMusica('intro');
 

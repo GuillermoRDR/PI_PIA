@@ -371,7 +371,7 @@ div#escena {
 video#extendf {
   display: block;
   max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 210px - var(--panel));
+  max-height: calc(100dvh - 210px - var(--panel));
   max-height: max(110px, calc(100dvh - 210px - var(--panel)));
   border-radius: 10px;
   border: 14px solid white;
@@ -592,7 +592,7 @@ div#caja:fullscreen div#escena {
 
 div#caja:fullscreen video#extendf {
   max-width: 100vw;
-  max-height: calc(100vh - 70px);
+  max-height: calc(100dvh - 70px);
   border: 0;
   border-radius: 0;
   transition: none;
@@ -621,7 +621,7 @@ body {
   align-content: start;
   text-align: center;
   background-repeat: no-repeat;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .trivia {
@@ -639,4 +639,17 @@ body {
     -3px 3px 0 #7A1304,
     -4px 4px 0 #7A1304,
     -5px 5px 0 #7A1304;
+}
+
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: linear-gradient(180deg, #FFC05C, #F87113, #AC1A02, #7A1304) no-repeat, #7A1304;
+}
+
+button#back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
 }
