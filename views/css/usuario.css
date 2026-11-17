@@ -18,7 +18,7 @@ body {
 }
 
 body {
-    min-height: 100vh;
+    min-height: 100dvh;
     min-height: 100dvh;
 
     font-family: Arial, Helvetica, sans-serif;
@@ -364,4 +364,17 @@ body {
     .perfil-favorita h2 {
         font-size: .9rem;
     }
+}
+
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: linear-gradient(180deg, #889FDC, #0339A6, #1E2E86, #141E59) no-repeat, #141E59;
+}
+
+button#back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
 }

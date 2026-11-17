@@ -26,7 +26,7 @@ body {
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   min-height: 100dvh;
   font-family: sans-serif;
   background: var(--fondo);
@@ -50,7 +50,7 @@ button:disabled {
 .pantalla {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   min-height: 100dvh;
   margin: 0;
   padding: 30px 18px;
@@ -229,7 +229,7 @@ button#back svg {
   --tam-pelota: clamp(40px, 7vmin, 64px);
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   height: 100svh;
   overflow: hidden;
   touch-action: manipulation;
@@ -436,4 +436,17 @@ button#back svg {
     animation: none !important;
     transition: none !important;
   }
+}
+
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: #e1d2a1;
+}
+
+button#back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
 }

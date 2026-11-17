@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('conf').addEventListener('click', () => location.assign('/configuracion'));
   $('usu').addEventListener('click', () => location.assign('/perfil'));
   $('tri').addEventListener('click', () => location.assign('/trivia'));
+  $('jug').addEventListener('click', () => location.assign('juego.html'));
   $('gal').addEventListener('click', () => location.assign('galeria.html'));
   $('esc').addEventListener('click', abrirEscaner);
   $('hide').addEventListener('click', cerrarEscaner);
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('mov').addEventListener('click', alternarAnimacion);
   $('arFoto').addEventListener('click', tomarFoto);
   $('fotoCerrar').addEventListener('click', cerrarFoto);
+  $('fotoGuardar').addEventListener('click', guardarFoto);
   window.addEventListener('pagehide', cerrarEscaner);
   document.querySelectorAll('.equipo-tab').forEach(boton => {
     boton.addEventListener('click', () => {
@@ -133,7 +135,6 @@ async function abrirEscaner() {
     direccional.setAttribute('intensity', '1');
     nuevaEscena.appendChild(direccional);
 
-    // Los quince anchors se crean ANTES de conectar la escena al DOM.
     for (const equipo of equipos) {
       const indice = Number(equipo.target_index_e);
       if (!Number.isInteger(indice) || indice < 0 || indice > 14 || registro.has(indice)) continue;
@@ -219,7 +220,6 @@ async function abrirEscaner() {
 function seleccionarEquipo(entrada) {
   if (equipoActivo !== entrada) {
 
-    // Detener y reiniciar la animación anterior.
     if (equipoActivo?.animacion) {
       const anterior = equipoActivo.animacion;
 
@@ -228,14 +228,12 @@ function seleccionarEquipo(entrada) {
       anterior.accion.reset();
     }
 
-    // Ocultar todos los modelos anteriores.
     for (const otro of registro.values()) {
       otro.modelo.object3D.visible = false;
     }
 
     equipoActivo = entrada;
 
-    // Reiniciar el estado del nuevo modelo.
     if (entrada.animacion) {
       entrada.animacion.reproduciendo = false;
       entrada.animacion.accion.paused = true;
@@ -361,7 +359,6 @@ function mostrarInformacionEquipo(equipo) {
     logo.removeAttribute('src');
   }
 
-  // Actualizar también las estadísticas.
   mostrarEstadisticasEquipo(equipo);
 }
 
@@ -469,6 +466,9 @@ function tomarFoto() {
     const imagen = canvas.toDataURL('image/png');
     $('fotoPreview').src = imagen;
     $('fotoDescargar').href = imagen;
+    const btnGuardar = $('fotoGuardar');
+    btnGuardar.disabled = false;
+    btnGuardar.textContent = 'Guardar en galería';
     $('fotoOverlay').classList.add('show');
   } catch (error) {
     console.error('No se pudo capturar:', error);
@@ -478,6 +478,33 @@ function tomarFoto() {
       'Error al tomar la fotografía',
       'No se pudo generar la imagen. Comprueba que la cámara y el renderizador estén funcionando.'
     );
+  }
+}
+
+async function guardarFoto() {
+  const boton = $('fotoGuardar');
+  const src = $('fotoPreview').src;
+  if (!src || boton.disabled) return;
+
+  boton.disabled = true;
+  boton.textContent = 'Guardando...';
+
+  try {
+    const blob = await (await fetch(src)).blob();
+    const datos = new FormData();
+    datos.append('foto', blob, 'captura.png');
+
+    const equipoId = equipoActivo?.equipo?.equipo_id;
+    if (equipoId) datos.append('equipo_id', equipoId);
+
+    await Alertas.peticion('/api/fotos', { method: 'POST', body: datos });
+
+    boton.textContent = 'Guardada ✓';
+    Alertas.mostrar('success', 'Foto guardada', 'La encontrarás en Galería > Fotos.');
+  } catch (error) {
+    boton.disabled = false;
+    boton.textContent = 'Guardar en galería';
+    Alertas.error(error, 'No se pudo guardar la foto.');
   }
 }
 
@@ -538,6 +565,3 @@ async function cargarUsuario() {
     await Alertas.error(error);
   }
 }
-
-
-

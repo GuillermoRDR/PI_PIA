@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   inicializarPerfil();
 });
@@ -74,15 +73,8 @@ async function cargarPuntuaciones() {
 
     trivia.textContent = datos.max_trivia ?? 0;
 
-    const JUEGO_DISPONIBLE = false;
-
-    if (JUEGO_DISPONIBLE) {
-      juego.textContent = datos.max_juego ?? 0;
-      juego.classList.remove('pendiente');
-    } else {
-      juego.textContent = 'Próximamente';
-      juego.classList.add('pendiente');
-    }
+    juego.textContent = datos.max_juego ?? 0;
+    juego.classList.remove('pendiente');
 
   } catch (error) {
     console.error('Error al cargar puntuaciones:', error);

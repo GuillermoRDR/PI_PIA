@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const usuarioModel = require('../models/mUsuario');
 const bucket = require('../config/firebase');
+const mFotos = require('../models/mFotos');
 
 async function registrarUsuario(req, res) {
   try {
@@ -46,7 +47,13 @@ async function registrarUsuario(req, res) {
       });
     }
 
-    await usuarioModel.crearUsuario(nombre, email, contraHash, fotoPerfilUrl);
+        const nuevoUsuario = await usuarioModel.crearUsuario(nombre, email, contraHash, fotoPerfilUrl);
+
+    try {
+      await mFotos.precargarParaUsuario(nuevoUsuario.usuario_id);
+    } catch (errorFotos) {
+      console.warn('No se pudieron precargar las fotos:', errorFotos.message);
+    }
 
     return res.status(201).json({ mensaje: 'Usuario registrado con éxito' });
   } catch (error) {

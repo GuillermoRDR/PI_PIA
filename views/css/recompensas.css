@@ -25,7 +25,7 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--gradiente-azul);
   color: var(--amarillo);
   padding: 35px 20px;
@@ -528,4 +528,17 @@ h1 {
   *::after {
     transition: none !important;
   }
+}
+
+html {
+  min-height: 100%;
+  overscroll-behavior: none;
+  background: linear-gradient(180deg, #889FDC, #0339A6, #1E2E86, #141E59) no-repeat, #141E59;
+}
+
+button#back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
 }

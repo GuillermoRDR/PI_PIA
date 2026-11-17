@@ -15,145 +15,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script src="/js/alertas.js" defer></script>
+   <script src="/js/audio.js" data-musica="/media/music/Configuracion.mp3" defer></script>
     <script src="js/configApp.js" defer></script>
 </head>
 
 <body>
+    <body>
     <button class="config-back-button" id="configBackButton" type="button" onclick="window.location.href='/principal'">
-
         <img class="config-back-icon" src="media/imagenes/back.png" alt="Regresar">
-
     </button>
 
-    <h1 class="config-title">
-        Configuración
-    </h1>
+    <h1 class="config-title">Configuración</h1>
+
     <section class="config-section">
-
-        <h2 class="config-section-title">
-            General
-        </h2>
-
+        <h2 class="config-section-title">General</h2>
 
         <div class="config-option">
-
             <input class="config-checkbox" id="musicToggle" type="checkbox" checked>
-
-            <label class="config-option-label" for="musicToggle">
-                Música
-            </label>
-
+            <label class="config-option-label" for="musicToggle">Música</label>
         </div>
 
         <div class="config-option">
-
             <input class="config-checkbox" id="sfxToggle" type="checkbox" checked>
-
-            <label class="config-option-label" for="sfxToggle">
-                Efectos de sonido
-            </label>
-
+            <label class="config-option-label" for="sfxToggle">Efectos de sonido</label>
         </div>
-
-
-        <div class="config-option">
-
-            <input class="config-checkbox" id="vibrationToggle" type="checkbox" checked>
-
-            <label class="config-option-label" for="vibrationToggle">
-                Vibración
-            </label>
-
-        </div>
-
     </section>
-
-    <section class="config-section">
-
-        <h2 class="config-section-title">
-            Realidad Aumentada
-        </h2>
-
-        <div class="config-option">
-
-            <input class="config-checkbox" id="particlesToggle" type="checkbox" checked>
-
-            <label class="config-option-label" for="particlesToggle">
-                Efectos de partículas
-            </label>
-
-        </div>
-
-        <div class="config-option">
-
-            <span class="config-option-label">
-                Recalibrar AR
-            </span>
-
-            <button class="config-action-button" id="recalibrateArButton" type="button">
-                Recalibrar
-            </button>
-
-        </div>
-
-        <div class="config-option">
-
-            <span class="config-option-label">
-                Posición del modelo
-            </span>
-
-            <button class="config-action-button" id="recalibrateModelButton" type="button">
-                Recalibrar
-            </button>
-
-        </div>
-
-    </section>
-
 
     <section class="config-section config-account-section">
-
-        <h2 class="config-section-title">
-            Cuenta
-        </h2>
+        <h2 class="config-section-title">Cuenta</h2>
 
         <div class="config-option config-logout-option">
-
-            <span class="config-option-label">
-                Cerrar sesión
-            </span>
-
-            <button class="config-logout-button" id="btnCS" type="button">
-                Cerrar sesión
-            </button>
-
+            <span class="config-option-label">Cerrar sesión</span>
+            <button class="config-logout-button" id="btnCS" type="button">Cerrar sesión</button>
         </div>
-
     </section>
 
     <footer class="config-footer">
-
-        <span>Versión 1.2.0</span>
-
+        <span>Versión 3.2.0</span>
         <br>
-
         <span>Créditos:</span>
-
         <br>
         <br>
-
-        <span>
-            Guillermo René Dávila Roque. 2003063.
-        </span>
-
+        <span>Guillermo René Dávila Roque. 2003063.</span>
         <br>
-
-        <span>
-            Juan Enrique Leal Gutiérrez. 1957848.
-        </span>
-
+        <span>Juan Enrique Leal Gutiérrez. 1957848.</span>
     </footer>
-
 </body>
+
 
 </html>
